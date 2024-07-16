@@ -12,7 +12,7 @@ from typing import Tuple
 
 from rodi import Container
 
-from app.settings import Settings
+from xcov19.app.settings import Settings
 
 
 def configure_services(settings: Settings) -> Tuple[Container, Settings]:

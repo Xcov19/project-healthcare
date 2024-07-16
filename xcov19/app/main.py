@@ -5,11 +5,11 @@ This module configures the BlackSheep application before it starts.
 from blacksheep import Application
 from rodi import Container
 
-from app.auth import configure_authentication
-from app.docs import configure_docs
-from app.errors import configure_error_handlers
-from app.services import configure_services
-from app.settings import load_settings, Settings
+from xcov19.app.auth import configure_authentication
+from xcov19.app.docs import configure_docs
+from xcov19.app.errors import configure_error_handlers
+from xcov19.app.services import configure_services
+from xcov19.app.settings import load_settings, Settings
 
 
 def configure_application(

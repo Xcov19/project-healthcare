@@ -24,7 +24,7 @@ except ModuleNotFoundError:
 else:
     uvloop.install()
 
-from app.main import app
+from xcov19.app.main import app
 
 
 if __name__ == "__main__":
