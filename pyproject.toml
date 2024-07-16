@@ -39,12 +39,11 @@ pythonVersion = "3.12"
 useLibraryCodeForTypes = true
 verboseOutput = true
 include = [
-    "./xcov19/app",
-    "./xcov19/domain",
-    "./xcov19/tests"
+    "xcov19/app",
+    "xcov19/domain",
+    "xcov19/tests"
 ]
 
-#venvPath = "$(poetry env info -p)"
 venv = "xcov19-7M_0Y8Vx-py3.12"
 
 [[tool.pyright.executionEnvironments]]
