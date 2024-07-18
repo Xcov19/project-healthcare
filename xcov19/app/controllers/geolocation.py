@@ -9,7 +9,7 @@ from xcov19.app.dto import LocationQueryJSON, FromOriginMatchHeader
 class GeolocationController(APIController):
     @classmethod
     def route(cls) -> str | None:
-        return "geo"
+        return "api/geo"
 
     @classmethod
     def version(cls) -> str:

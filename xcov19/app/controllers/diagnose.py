@@ -9,7 +9,7 @@ from xcov19.app.dto import DiagnosisQueryJSON, FromOriginMatchHeader
 class DiagnosisController(APIController):
     @classmethod
     def route(cls) -> str | None:
-        return "diagnose"
+        return "api/diagnose"
 
     @classmethod
     def version(cls) -> str:
