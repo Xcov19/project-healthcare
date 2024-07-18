@@ -6,6 +6,7 @@ from blacksheep import Application
 from rodi import Container
 
 from xcov19.app.auth import configure_authentication
+from xcov19.app.controllers import controller_router
 from xcov19.app.docs import configure_docs
 from xcov19.app.errors import configure_error_handlers
 from xcov19.app.middleware import origin_header_middleware, configure_middleware
@@ -20,6 +21,7 @@ def configure_application(
     app = Application(
         services=services, show_error_details=settings.app.show_error_details
     )
+    app.controllers_router = controller_router
 
     configure_error_handlers(app)
     configure_authentication(app, settings)

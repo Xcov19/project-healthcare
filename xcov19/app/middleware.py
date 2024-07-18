@@ -14,6 +14,8 @@ async def origin_header_middleware(
 ):
     if not FromOriginMatchHeader.name:
         raise ValueError("FromOriginMatchHeader name is not set.")
+    if request.path.startswith("/docs") or request.path.startswith("/openapi"):
+        return await handler(request)
     match request.headers.get(FromOriginMatchHeader.name.encode()):
         case (b"secret",):
             return await handler(request)

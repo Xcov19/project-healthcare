@@ -1,7 +1,8 @@
 """Controller API routes for case diagnosis."""
 
 from blacksheep import Response, FromJSON, json
-from blacksheep.server.controllers import APIController, post
+from blacksheep.server.controllers import APIController
+from xcov19.app.controllers import post
 
 from xcov19.app.dto import DiagnosisQueryJSON, FromOriginMatchHeader
 
@@ -9,7 +10,7 @@ from xcov19.app.dto import DiagnosisQueryJSON, FromOriginMatchHeader
 class DiagnosisController(APIController):
     @classmethod
     def route(cls) -> str | None:
-        return "api/diagnose"
+        return "diagnose"
 
     @classmethod
     def version(cls) -> str:
