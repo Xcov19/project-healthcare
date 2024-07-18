@@ -20,7 +20,8 @@ expect slight shift towards domain models and services structure.
 TODOs:
 
 - [ ] Add standard documentation in README.md
-- [ ] Add fact entity and aggregate business logic
+- [ ] Add routes logic
+- [ ] Add domain entity and aggregate business logic
 - [ ] Add unit tests against services
 - [ ] Add services for patient and provider
 - [ ] Add OpenAPI endpoints for services
