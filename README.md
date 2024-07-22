@@ -19,10 +19,18 @@ expect slight shift towards domain models and services structure.
 
 TODOs:
 
+
+
 - [ ] Add standard documentation in README.md
+- [ ] Strategic roadmap
+- [ ] CONTRIBUTING.md file
+- [ ] Updating README.md: A contributor must know what the high level UML / block level diagram of this ecosystem looks like to understand the context. 
 - [ ] Add routes logic
 - [ ] Add domain entity and aggregate business logic
 - [ ] Add unit tests against services
+- [ ] Containerization 
+- [ ] Adding fast and long running test pipeline in github CI for PRs: All unit tests are to be marked fast. All automated Integration and Automation tests are long running.
+- [ ] CI/CD: Building and hosting staged and prod instance. I have shortlisted on few easy to deploy PaaS. We earlier used GCP but have moved away from al major cloud platforms.
 - [ ] Add services for patient and provider
 - [ ] Add OpenAPI endpoints for services
 - [ ] Add datastore integration to services
