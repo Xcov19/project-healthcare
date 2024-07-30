@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "api backend for mhc UI"
 authors = ["codecakes <akulmat@protonmail.com>"]
 readme = "README.md"
-package-mode = false
+#   package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
