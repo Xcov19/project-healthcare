@@ -13,6 +13,7 @@
     pkgs.poetry
     pkgs.nodejs_20
     pkgs.ruff
+    pkgs.gnumake
     # pkgs.docker
     # pkgs.nodePackages.nodemon
   ];
@@ -28,6 +29,15 @@
     extensions = [
       # "vscodevim.vim"
       "ms-azuretools.docker"
+      "sourcery.sourcery"
+      "eamodio.gitlens"
+      "ebenjs.vampire-ebenjs"
+      "GitHub.vscode-pull-request-github"
+      "mgesbert.python-path"
+      "ms-azuretools.vscode-docker"
+      "ms-python.isort"
+      "njqdev.vscode-python-typehint"
+      "solomonkinard.todos"
     ];
 
     
