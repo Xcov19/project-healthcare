@@ -27,11 +27,15 @@ def configure_services(settings: Settings) -> Tuple[Container, Settings]:
 
 
 class LocationQueryServiceInterface[T: LocationQueryJSON](Protocol):
+
+    @classmethod
     @abc.abstractmethod
-    async def resolve_coordinates(self, query: T) -> Address:
+    async def resolve_coordinates(cls, query: T) -> Address:
         raise NotImplementedError
 
 
 class GeolocationQueryService(LocationQueryServiceInterface):
-    async def resolve_coordinates(self, query: LocationQueryJSON) -> Address:
+
+    @classmethod
+    async def resolve_coordinates(cls, query: LocationQueryJSON) -> Address:
         return Address()
