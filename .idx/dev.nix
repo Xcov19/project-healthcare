@@ -29,7 +29,6 @@
     extensions = [
       # "vscodevim.vim"
       "ms-azuretools.docker"
-      "sourcery.sourcery"
       "eamodio.gitlens"
       "ebenjs.vampire-ebenjs"
       "GitHub.vscode-pull-request-github"
@@ -38,6 +37,11 @@
       "ms-python.isort"
       "njqdev.vscode-python-typehint"
       "solomonkinard.todos"
+      "ms-python.black-formatter"
+      "ms-python.debugpy"
+      "ms-python.python"
+      "bungcip.better-toml"
+      "sourcery.sourcery"
     ];
 
     
