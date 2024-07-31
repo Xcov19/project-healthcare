@@ -1,5 +1,5 @@
 from blacksheep import FromHeader
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class FromOriginMatchHeader(FromHeader[str]):
@@ -10,6 +10,14 @@ class FromOriginMatchHeader(FromHeader[str]):
 class GeoLocation(BaseModel):
     lat: float
     lng: float
+
+class Address(BaseModel):
+    name: str | None = Field(default=None)
+    street: str | None = Field(default=None)
+    city: str | None = Field(default=None)
+    state: str | None = Field(default=None)
+    zip: str | None = Field(default=None)
+    country: str | None = Field(default=None)
 
 
 class AnonymousId(BaseModel):

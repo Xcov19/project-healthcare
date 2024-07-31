@@ -8,10 +8,13 @@ For more information and documentation, see `rodi` Wiki and examples:
     https://github.com/Neoteroi/rodi/tree/main/examples
 """
 
-from typing import Tuple
+import abc
+from typing import Protocol, Tuple
 
 from rodi import Container
 
+from xcov19.app.dto import (Address, AnonymousId, GeoLocation,
+                            LocationQueryJSON, QueryId)
 from xcov19.app.settings import Settings
 
 
@@ -19,5 +22,20 @@ def configure_services(settings: Settings) -> Tuple[Container, Settings]:
     container = Container()
 
     container.add_instance(settings)
+    container.add_scoped(LocationQueryServiceInterface, GeolocationQueryService)
+    
 
     return container, settings
+
+class LocationQueryServiceInterface(Protocol):
+    
+    @abc.abstractmethod
+    async def resolve_coordinates(self, query: LocationQueryJSON) -> Address:
+        raise NotImplementedError
+
+
+class GeolocationQueryService(LocationQueryServiceInterface):
+
+    async def resolve_coordinates(self, query: LocationQueryJSON) -> Address:
+        return Address()
+
