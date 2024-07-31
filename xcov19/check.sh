@@ -1,4 +1,5 @@
 #!/bin/bash
 
-ruff check xcov19/domain/*.py
-poetry run pyright xcov19/domain
+ruff check domain/
+ruff check app/
+PYRIGHT_PYTHON_FORCE_VERSION=latest poetry run pyright **/*.py
