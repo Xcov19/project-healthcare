@@ -11,6 +11,7 @@ class GeoLocation(BaseModel):
     lat: float
     lng: float
 
+
 class Address(BaseModel):
     name: str | None = Field(default=None)
     street: str | None = Field(default=None)

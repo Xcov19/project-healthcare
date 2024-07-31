@@ -22,7 +22,7 @@ class GeolocationController(APIController):
     async def location_query(
         self,
         location_query: FromJSON[LocationQueryJSON],
-        # geo_service: LocationQueryServiceInterface,
+        geo_service: LocationQueryServiceInterface,
         _from_origin_header: FromOriginMatchHeader,
     ) -> Response:
         # TODO: Implement Geolocation application service GeoLocationService
