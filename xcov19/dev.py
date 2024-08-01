@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
         config = Config()
 
-        config.bind = [f"localhost:{port}"]
+        config.bind = [f"0.0.0.0:{port}"]
         config.debug = True
         config.use_reloader = True
 
