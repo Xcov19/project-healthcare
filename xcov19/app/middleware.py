@@ -11,7 +11,7 @@ def configure_middleware(app: Application, *middlewares):
 
 async def origin_header_middleware(
     request: Request, handler: Callable[[Request], Awaitable[Response]]
-):
+) -> Response:
     if not FromOriginMatchHeader.name:
         raise ValueError("FromOriginMatchHeader name is not set.")
     if request.path.startswith("/docs") or request.path.startswith("/openapi"):

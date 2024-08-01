@@ -1,9 +1,12 @@
 """Controller API routes for geolocation."""
 
-from blacksheep import Response, FromJSON, ok
+from blacksheep import Response, ok, FromJSON
 from blacksheep.server.controllers import APIController
+
 from xcov19.app.controllers import post
-from xcov19.app.dto import LocationQueryJSON, FromOriginMatchHeader
+from xcov19.app.dto import FromOriginMatchHeader, LocationQueryJSON
+
+from xcov19.app.services import LocationQueryServiceInterface
 
 
 class GeolocationController(APIController):
@@ -19,6 +22,7 @@ class GeolocationController(APIController):
     async def location_query(
         self,
         location_query: FromJSON[LocationQueryJSON],
+        geo_service: LocationQueryServiceInterface,
         _from_origin_header: FromOriginMatchHeader,
     ) -> Response:
         # TODO: Implement Geolocation application service GeoLocationService

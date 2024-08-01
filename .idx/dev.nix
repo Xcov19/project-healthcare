@@ -13,8 +13,12 @@
     pkgs.poetry
     pkgs.nodejs_20
     pkgs.ruff
-    # pkgs.docker
-    # pkgs.nodePackages.nodemon
+    pkgs.pyright
+    pkgs.gnumake
+    pkgs.openssh
+    pkgs.ssh-agents
+    pkgs.ssh-ident
+    pkgs.ssh-tools
   ];
 
   # Services
@@ -28,6 +32,19 @@
     extensions = [
       # "vscodevim.vim"
       "ms-azuretools.docker"
+      "eamodio.gitlens"
+      "ebenjs.vampire-ebenjs"
+      "GitHub.vscode-pull-request-github"
+      "mgesbert.python-path"
+      "ms-azuretools.vscode-docker"
+      "ms-python.isort"
+      "njqdev.vscode-python-typehint"
+      "solomonkinard.todos"
+      "ms-python.black-formatter"
+      "ms-python.debugpy"
+      "ms-python.python"
+      "bungcip.better-toml"
+      "sourcery.sourcery"
     ];
 
     
@@ -53,8 +70,9 @@
       # Runs when a workspace is first created
       onCreate = {
         # Example: install JS dependencies from NPM
-        # npm-install = "npm install";
         poetry-install = "poetry install --no-root --with=dev --sync -v";
+        npm-install = "cd xcov19 && npm install";
+        precommit-install = "pre-commit install";
       };
       # Runs when the workspace is (re)started
       onStart = {

@@ -8,21 +8,25 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+pydantic = "^2.8.2"
 blacksheep = "^2.0.7"
 Hypercorn = "^0.17.3"
 MarkupSafe = "^2.1.3"
 uvloop = {version = "^0.19.0", markers = "sys_platform != 'win32'"}
 pydantic-settings = {version = "^2.3.4", markers = "sys_platform != 'win32'"}
+pyright = "^1.1.374"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.2"
 mypy = "^1.10.1"
 blacksheep-cli = "^0.0.4"
-pydantic = "^2.8.2"
 rich = "^13.7.1"
-pyright = "^1.1.371"
+pyright = "^1.1.374"
 pre-commit = "^3.7.1"
 pre-commit-mirror-maker = "^1.10.0"
+pytest-asyncio = "^0.23.8"
+anyio = "^4.4.0"
+black = "^24.4.2"
 
 [tool.poetry.group.dev.dependencies.pytest]
 version = "^8.2.2"
@@ -33,6 +37,7 @@ addopts = "-ra -q"
 testpaths = [
     "xcov19/tests",
 ]
+asyncio_mode = "auto"
 
 [tool.pyright]
 pythonVersion = "3.12"
@@ -43,8 +48,11 @@ include = [
     "xcov19/domain",
     "xcov19/tests"
 ]
-
+exclude = [
+    "**/node_modules",
+    "**/__pycache__"]
 venv = "xcov19-7M_0Y8Vx-py3.12"
+reportMissingImports = true
 
 [[tool.pyright.executionEnvironments]]
 root = "."
