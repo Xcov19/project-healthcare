@@ -25,7 +25,7 @@ class FacilityOwnership(enum.StrEnum):
 type FacilityType = FacilityEstablishment
 type FacilityOwnerType = FacilityOwnership
 type ProviderName = str
-type Specialty = List[str]
+type Specialties = List[str]
 type Qualification = List[str]
 type PracticeExpYears = int | float
 
@@ -46,7 +46,7 @@ class Contact[T: MobileTelephone]:
 
 @dataclass
 class Stars:
-    value: int | float = dataclasses.field(default=0)
+    value: int | float = dataclasses.field(default=1)
     min_rating: dataclasses.InitVar[int] = dataclasses.field(default=1)
     max_rating: dataclasses.InitVar[int] = dataclasses.field(default=5)
 
@@ -70,7 +70,7 @@ class Reviews:
 @dataclass
 class Doctor:
     name: str
-    specialties: Specialty
+    specialties: Specialties
     degree: Qualification
     experience: PracticeExpYears
 
@@ -83,6 +83,6 @@ class Provider:
     contact: Contact
     facility_type: FacilityType
     ownership: FacilityOwnerType
-    specialties: Specialty
+    specialties: Specialties
     stars: Annotated[int, Stars(min_rating=1, max_rating=5)]
     reviews: Annotated[int, Reviews(value=0)]

@@ -1,16 +1,17 @@
 from blacksheep import FromHeader
 from pydantic import BaseModel, Field
 
-
+from xcov19.domain.models.provider import FacilityType, FacilityOwnerType, Specialties
+from typing import Annotated, List
 class FromOriginMatchHeader(FromHeader[str]):
     name = "X-Origin-Match-Header"
     secret = "secret"
 
 
+
 class GeoLocation(BaseModel):
     lat: float
     lng: float
-
 
 class Address(BaseModel):
     name: str | None = Field(default=None)
@@ -38,3 +39,18 @@ class LocationQueryJSON(BaseModel):
 class DiagnosisQueryJSON(BaseModel):
     query: str
     query_id: QueryId
+
+
+class FacilitiesResult(BaseModel):
+    name: str
+    address: Address
+    geolocation: GeoLocation
+    contact: str
+    facility_type: Annotated[str, Field(...)]
+    ownership: Annotated[str, Field(...)]
+    specialties: Annotated[List[str], Field(...)]
+    stars: Annotated[int, Field(ge=1, le=5)]
+    reviews: Annotated[int, Field(ge=0)]
+    rank: Annotated[int, Field(default = 1, gt=0, le=20)]
+    estimated_time: Annotated[float, Field(default=0.0, ge=0)]
+
