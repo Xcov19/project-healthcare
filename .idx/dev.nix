@@ -13,9 +13,12 @@
     pkgs.poetry
     pkgs.nodejs_20
     pkgs.ruff
+    pkgs.pyright
     pkgs.gnumake
-    # pkgs.docker
-    # pkgs.nodePackages.nodemon
+    pkgs.openssh
+    pkgs.ssh-agents
+    pkgs.ssh-ident
+    pkgs.ssh-tools
   ];
 
   # Services
