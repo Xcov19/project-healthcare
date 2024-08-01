@@ -13,9 +13,14 @@ expect slight shift towards domain models and services structure.
 ### For Linux and Mac
 
 1. create a Poetry virtual environment using python version in `pyproject.toml`
-2. `poetry install --no-root`
+2. `poetry install --no-root --with=dev`
 3. Run in development environment: 
 `poetry run python3 -m xcov19.dev`
+
+### For IDX
+
+1. `poetry use env python3.12`
+2. `cd xcov19 && make run`
 
 TODOs:
 

@@ -70,8 +70,9 @@
       # Runs when a workspace is first created
       onCreate = {
         # Example: install JS dependencies from NPM
-        # npm-install = "npm install";
         poetry-install = "poetry install --no-root --with=dev --sync -v";
+        npm-install = "cd xcov19 && npm install";
+        precommit-install = "pre-commit install";
       };
       # Runs when the workspace is (re)started
       onStart = {
