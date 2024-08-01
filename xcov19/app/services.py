@@ -13,7 +13,7 @@ from typing import Protocol, Tuple
 
 from rodi import Container
 
-from xcov19.app.dto import Address, LocationQueryJSON, FacilitiesResult
+from xcov19.app.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 from xcov19.app.settings import Settings
 
 
@@ -48,7 +48,24 @@ class LocationQueryServiceInterface[T: LocationQueryJSON](Protocol):
         raise NotImplementedError
 
 
+# TODO: make hard-coded response functional
 class GeolocationQueryServiceImpl(LocationQueryServiceInterface):
     @classmethod
     async def resolve_coordinates(cls, query: LocationQueryJSON) -> Address:
         return Address()
+
+    @classmethod
+    async def fetch_facilities(cls, query: LocationQueryJSON) -> FacilitiesResult:
+        return FacilitiesResult(
+            name="Test facility",
+            address=Address(),
+            geolocation=GeoLocation(lat=0.0, lng=0.0),
+            contact="+919999999999",
+            facility_type="nursing",
+            ownership="charity",
+            specialties=["surgery", "pediatrics"],
+            stars=4,
+            reviews=120,
+            rank=2,
+            estimated_time=20,
+        )
