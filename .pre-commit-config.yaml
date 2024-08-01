@@ -27,6 +27,8 @@ repos:
   rev: v1.1.374
   hooks:
     - id: pyright
+      name: pyright
+      entry: poetry run pyright
       types: [python]
       language: system
       args: [-p, pyproject.toml]
