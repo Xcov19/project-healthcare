@@ -9,6 +9,7 @@ Project Healthcare, from hereon called the brokering service, is a set of upstre
 1. Exposing a diagnosis API to capture patient symptoms.
 2. Exposing geolocation API to caputure patient's location and offer nearby facilities to take action on based on their diagnosis and location.
 
+## Extensible and Open
 Built using modified project template for [BlackSheep](https://github.com/Neoteroi/BlackSheep)
 web framework to start Web APIs, the project structure adheres blacksheep's domain and infrastructure segregation philosophy. It naturally fits the 
 domain driven design philosophy using ports and adapters pattern so expect slight shift towards domain models and services structure.
@@ -17,7 +18,6 @@ The specification follows a sandwich service model i.e. it requires one or more 
 1. The patient facing application, known from hereon as the downstream consumer service, calls the diagnosis and geolocation API.
 2. The brokering service stores transient diagnosis request and enqueues them to upstream provider service that should return records of facilities and their specialties based on the diagnosis.
 3. The brokering service returns the records of matching facilities to the downstream consumer service.
-
 
 ## Getting started
 
@@ -42,7 +42,15 @@ PYTHON_VERSION=3.12.4
 PORT=44777
 ```
 
-## Extensible and Open
+### Sandbox for reference
+A reference instance exists on [![Render](https://gist.github.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/SERVICE-animated.svg)](https://project-healthcare.onrender.com/docs)
+
+
+See [Deploy](#deploy) to spin up your own instance.
+
+## Project Management 
+
+See [Projects](https://github.com/Xcov19/project-healthcare/projects?query=is%3Aopen)
 
 ### TODOs:
 
