@@ -1,12 +1,23 @@
+![XCoV19](https://substackcdn.com/image/fetch/w_96,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb16a2fa6-d7dd-4fce-8c1d-2c3c0c63b8a6_435x435.png)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Xcov19/project-healthcare)
+[<img src="https://substackcdn.com/image/fetch/w_96,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fb16a2fa6-d7dd-4fce-8c1d-2c3c0c63b8a6_435x435.png" alt="Newsletter" height="32" />](https://xcov19.dev)
+
 # Project Healthcare (xcov19)
 
-Built using modified project template for [BlackSheep](https://github.com/Neoteroi/BlackSheep)
-web framework to start Web APIs.
+Project Healthcare, from hereon called the brokering service, is a set of upstream OpenAPI specification to extend any patient facing user interface looking to integrate to location-aware consultation and diagnostics facilities near them by:
+1. Exposing a diagnosis API to capture patient symptoms.
+2. Exposing geolocation API to caputure patient's location and offer nearby facilities to take action on based on their diagnosis and location.
 
-The project structure adheres blacksheep's 
-domain and infrastructure segregation philosophy. It naturally fits the 
-domain driven design philosophy using ports and adapters pattern so 
-expect slight shift towards domain models and services structure.
+Built using modified project template for [BlackSheep](https://github.com/Neoteroi/BlackSheep)
+web framework to start Web APIs, the project structure adheres blacksheep's domain and infrastructure segregation philosophy. It naturally fits the 
+domain driven design philosophy using ports and adapters pattern so expect slight shift towards domain models and services structure.
+
+The specification follows a sandwich service model i.e. it requires one or more upstream producer services and one downstream consumer service as follows:
+1. The patient facing application, known from hereon as the downstream consumer service, calls the diagnosis and geolocation API.
+2. The brokering service stores transient diagnosis request and enqueues them to upstream provider service that should return records of facilities and their specialties based on the diagnosis.
+3. The brokering service returns the records of matching facilities to the downstream consumer service.
+
 
 ## Getting started
 
@@ -22,13 +33,23 @@ expect slight shift towards domain models and services structure.
 1. `poetry use env python3.12`
 2. `cd xcov19 && make run`
 
-TODOs:
+### Deploy
 
+To test the instance on render, set the following environment variables:
+
+```bash
+PYTHON_VERSION=3.12.4
+PORT=44777
+```
+
+## Extensible and Open
+
+### TODOs:
 
 - [ ] Add standard documentation in README.md
+- [ ] Add Getting Started · Learn the Basics,  Community and Support links. A contributor must know what the high level UML / block level diagram of this ecosystem looks like.
 - [ ] Strategic roadmap
 - [ ] CONTRIBUTING.md file
-- [ ] Updating README.md: A contributor must know what the high level UML / block level diagram of this ecosystem looks like to understand the context. 
 - [ ] Add routes logic
 - [ ] Add domain entity and aggregate business logic
 - [ ] Add unit tests against services
