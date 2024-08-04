@@ -12,9 +12,6 @@ body:
       options:
         - "Yes"
         - "No"
-  - type: markdown
-    attributes:
-      value: "# Title"
   - type: dropdown
     id: status
     attributes:
@@ -28,8 +25,10 @@ body:
   - type: markdown
     attributes:
       value: "## Context"
-  - type: input
+  - type: textarea
     id: context
+    validations:
+      required: true
     attributes:
       label: Context
       description: What is the issue that we're seeing that is motivating this decision or change?
@@ -39,6 +38,8 @@ body:
       value: "## Decision"
   - type: textarea
     id: decision
+    validations:
+      required: true
     attributes:
       label: Decision
       description: What is the change that we're proposing and/or doing?
@@ -48,6 +49,8 @@ body:
       value: "## Consequences"
   - type: textarea
     id: consequences
+    validations:
+      required: true
     attributes:
       label: Consequences
       description: What becomes easier or more difficult to do because of this change?
