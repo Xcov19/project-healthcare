@@ -1,0 +1,35 @@
+name: adr template
+about: See [ADR](https://github.com/joelparkerhenderson/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-michael-nygard/index.md)
+title: ADR Record
+assigness: [codecakes]
+labels: [C4GT Community, C4GT Mentorship, C4GT Advisory]
+body:
+  - type: dropdown
+    id: adr-superscedes
+    attributes:
+      label: Does it superscede an existing ADR?
+      validations:
+        required: true
+      options:
+        - Yes
+        - No
+  - type: markdown
+    attributes:
+      value: "# Title"
+  - type: markdown
+    attributes:
+      value: "## Status"
+      description: What is the status, such as proposed, accepted, rejected, deprecated, superseded, etc.?
+  - type: markdown
+    attributes:
+      value: "## Context"
+      description: What is the issue that we're seeing that is motivating this decision or change?
+  - type: markdown
+    attributes:
+      value: "## Decision"
+      description: What is the change that we're proposing and/or doing?
+  - type: markdown
+    attributes:
+      value: "## Consequences"
+      description: What becomes easier or more difficult to do because of this change?
+  
