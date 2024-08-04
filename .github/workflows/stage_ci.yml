@@ -1,0 +1,34 @@
+name: Staged CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install poetry
+        poetry install --no-root --with=dev
+
+    - name: Run Pre-commit
+      run: |
+        poetry run pre-commit run --all-files
+
+    - name: Run tests
+      run: |
+        poetry run pytest
