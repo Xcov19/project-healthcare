@@ -25,9 +25,6 @@ jobs:
         pip install poetry
         poetry install --no-root --with=dev
 
-    - name: Run Flake8
-      run: poetry run flake8 xcov19
-
     - name: Run Pre-commit
       run: |
         poetry run pre-commit run --all-files
