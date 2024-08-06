@@ -11,15 +11,9 @@ _Repo metadata_
 [![issues - project-healthcare](https://img.shields.io/github/issues/Xcov19/project-healthcare)](https://github.com/Xcov19/project-healthcare/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/Xcov19/project-healthcare)](https://github.com/Xcov19/project-healthcare/pulls)
 
-_Powered and Supported generously by_
+## What is it
+![xcov19_demo_ezgif-3-0edbb84875](https://github.com/user-attachments/assets/438e2e2c-a40f-49fc-84b0-20037acf22d6)
 
-#### [DigitalOcean](https://www.digitalocean.com/)
-Previously supported as [Hollie’s Hub for Good](https://www.digitalocean.com/community/pages/hollies-hub-for-good) project
-
-![DO_Powered_by_Badge_blue](https://github.com/user-attachments/assets/cf5115cd-b38e-4c74-a9f3-cb4a0edf95f0)
-
-#### [Helpful Engineering](https://helpfulengineering.org/)
-![Helpful Engineering](https://helpfulengineering.org/wp-content/uploads/2021/08/HelpfulEngineering_textmark.svg)
 
 ## Documentation
 
@@ -125,3 +119,19 @@ A public and open solution to these use cases makes sense because:
 2. Many proponents of OSS have been building such systems such as Healthstack system in Bangladesh.
 3. By building out an opensource version, it makes sense to verify, audit and get feedback faster, build faster and better, aligned to the common's need.
 4. And truly be transparent.
+
+<hr />
+
+_**Powered and Supported generously by**_
+
+#### [DigitalOcean](https://www.digitalocean.com/)
+Previously supported as [Hollie’s Hub for Good](https://www.digitalocean.com/community/pages/hollies-hub-for-good) project
+
+![DO_Powered_by_Badge_blue](https://github.com/user-attachments/assets/cf5115cd-b38e-4c74-a9f3-cb4a0edf95f0)
+
+#### [Helpful Engineering](https://helpfulengineering.org/)
+![Helpful Engineering](https://helpfulengineering.org/wp-content/uploads/2021/08/HelpfulEngineering_textmark.svg)
+
+#### [My Health Connect Society](https://www.myhealthconnect.in)
+![Logo_MyHealthConnect_v2](https://github.com/user-attachments/assets/6fc6df71-682c-4efe-b1b1-cc21811ec250)
+
