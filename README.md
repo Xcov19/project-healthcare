@@ -11,6 +11,15 @@ _Repo metadata_
 [![issues - project-healthcare](https://img.shields.io/github/issues/Xcov19/project-healthcare)](https://github.com/Xcov19/project-healthcare/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/Xcov19/project-healthcare)](https://github.com/Xcov19/project-healthcare/pulls)
 
+_Powered and Supported generously by_
+
+#### [DigitalOcean](https://www.digitalocean.com/)
+Previously supported as [Hollie’s Hub for Good](https://www.digitalocean.com/community/pages/hollies-hub-for-good) project
+
+![DO_Powered_by_Badge_blue](https://github.com/user-attachments/assets/cf5115cd-b38e-4c74-a9f3-cb4a0edf95f0)
+
+#### [Helpful Engineering](https://helpfulengineering.org/)
+![Helpful Engineering](https://helpfulengineering.org/wp-content/uploads/2021/08/HelpfulEngineering_textmark.svg)
 
 ## Documentation
 
