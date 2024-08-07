@@ -20,7 +20,7 @@ jobs:
         python-version: '3.12'
 
     - name: Run Composite Action to Install Packages
-      uses: ./.github/actions/packages.yml
+      uses: ./.github/actions
 
     - name: Run tests
       run: |
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - name: Run Composite Action to Install Packages
-        uses: ./.github/actions/packages.yml
+        uses: ./.github/actions
       - name: Run Pre-commit
         uses: pre-commit/action@v3.0.1
         with:
