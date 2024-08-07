@@ -12,23 +12,30 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.12'
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        pip install poetry
-        poetry install --no-root --with=dev
-
-    - name: Run Pre-commit
-      run: |
-        poetry run pre-commit run --all-files
+    - name: Run Composite Action to Install Packages
+      uses: ./.github/actions
 
     - name: Run tests
       run: |
         poetry run pytest
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Run Composite Action to Install Packages
+        uses: ./.github/actions
+
+      - name: Run Pre-commit
+        run: |
+          poetry install --no-root --all-extras
+          poetry run pre-commit run --all-files

@@ -3,3 +3,9 @@ check:
 
 run:
 	@bash run.sh
+
+install:
+	@bash install.sh
+
+pip-install:
+	pip install --prefer-binary --use-pep517  --check-build-dependencies .[dev]

@@ -1,0 +1,11 @@
+name: "Installable Python Packages"
+description: "Reusable composite action to install packages."
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install poetry
+        make pip-install
