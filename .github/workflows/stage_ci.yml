@@ -36,4 +36,6 @@ jobs:
         uses: ./.github/actions
 
       - name: Run Pre-commit
-        run: poetry run pre-commit run --all-files
+        run: |
+          poetry install --no-root --all-extras
+          poetry run pre-commit run --all-files
