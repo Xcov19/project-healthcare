@@ -8,4 +8,4 @@ install:
 	@bash install.sh
 
 pip-install:
-	pip install --prefer-binary --use-pep517 --check-build-dependencies .
+	pip install --prefer-binary --use-pep517  --check-build-dependencies .[dev]
