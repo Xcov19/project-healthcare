@@ -23,7 +23,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install poetry
-        poetry install --no-root --with=dev
+        make pip-install
 
     - name: Run Pre-commit
       run: |

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "api backend for mhc UI"
 authors = ["codecakes <akulmat@protonmail.com>"]
 readme = "README.md"
-#   package-mode = false
+package-mode = true
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -65,5 +65,5 @@ extraPaths = [
 ]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
