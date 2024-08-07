@@ -19,11 +19,8 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        pip install poetry
-        make pip-install
+    - name: Run Composite Action to Install Packages
+      uses: .github/actions/packages.yml
 
     - name: Run tests
       run: |
@@ -34,6 +31,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: Run Composite Action to Install Packages
+        uses: .github/actions/packages.yml
       - name: Run Pre-commit
         uses: pre-commit/action@v3.0.1
         with:
