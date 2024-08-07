@@ -36,5 +36,4 @@ jobs:
       - name: Run Pre-commit
         uses: pre-commit/action@v3.0.1
         with:
-          pre-commit_version: 'latest'
           extra_args: --all-files
