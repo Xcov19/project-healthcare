@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: Install dependencies
+      shell: bash
       run: |
         python3 -m pip install --upgrade pip
         pip install poetry
