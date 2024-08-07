@@ -20,7 +20,7 @@ jobs:
         python-version: '3.12'
 
     - name: Run Composite Action to Install Packages
-      uses: .github/actions/packages.yml
+      uses: .github/actions
 
     - name: Run tests
       run: |
