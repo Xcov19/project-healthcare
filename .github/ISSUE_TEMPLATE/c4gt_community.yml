@@ -72,12 +72,10 @@ body:
       multiple: false
       options:
         - C4GT
-        - Dhiway
         - FIDE
         - SamagraX
-        - ShikshaLokam
         - Tech4Dev
-        - Tibil
+        - XCoV19
     validations:
       required: true
 
