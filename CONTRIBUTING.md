@@ -29,7 +29,13 @@ Set up your preferred code editor or IDE for a smooth development experience. Co
 
 ## Reporting Bugs 🐞
 
-Before submitting a bug report, take these steps:
+Before reporting a bug, please determine the type of issue you're encountering:
+
+- Security or Vulnerability Issue: If your bug involves a security vulnerability, such as a potential breach or unauthorized access, please follow our [Security Template](https://github.com/Xcov19/project-healthcare/security/advisories/new).
+
+- Non-Security Related Bug: For all other types of bugs, please use the [C4GT Community Template](https://github.com/Xcov19/project-healthcare/issues/new?assignees=&labels=&projects=&template=c4gt_community.yml&title=%5BC4GT+Community%5D%3A+).
+
+Your accurate classification helps us address issues more efficiently.
 
 ### 1. Search Existing Issues  🔍:
 
@@ -37,48 +43,61 @@ Go through the [open issues](https://github.com/Xcov19/project-healthcare/issues
 
 ### 2. If the Issue Isn't Reported📝:
 
-Open a new issue on GitHub. Provide clear and concise details to help the team understand and reproduce the bug.
+Open a new issue on GitHub by following the most appropriate template as mentioned above. Provide clear and concise details to help the team understand and reproduce the bug.
 
-#### What to Include in Your Bug Report:
-
-***Title:** A clear and concise description of the bug.
-
-***Description:** A detailed breakdown of the problem you encountered.
-
-***Steps to reproduce the bug** (if possible).
-
-***Error messages or screenshots**
-
-***Code Sample (Optional):** Include a minimal code snippet that demonstrates the bug if it's specific to a particular piece of code.
-
-### Submitting a Patch
+## Submitting a Patch
 
 #### 1. Create a Branch🌿:
 
 Create a new branch for your bug fix or new feature. Use a descriptive branch name that reflects the change you're making. Here's an example command:
 
 `
-git checkout -b fix-bug-in-feature-x`
+git checkout -b new-branch-name`
 
 #### 2. Make Your Changes and Commit Them:
 
 Edit the code to address the bug or implement the new feature.
 
-Stage and commit your changes using Git:
+**Testing Your Changes 🧪** 
 
-`git add .
-git commit -m "Fixed bug in feature X (brief description)"`
+To ensure your changes align with our guidelines, please follow these steps to test them:
+
+Testing Framework: We use pytest as our test runner. This helps us ensure that the codebase remains reliable and any new changes are correctly implemented.
+
+Locate Test Files: You can find the test files in the [tests directory](./xcov19/tests).
+
+Run Tests: Make sure you have pytest installed. If not, install it using:
+
+`
+pip install pytest
+`
+
+Navigate to the [tests directory](./xcov19/tests) and run the tests with the command 
+`
+pytest
+`
+
+Pytest will automatically discover and execute all the test files and functions.
+View Results: After running the tests, review the output to ensure all tests pass. If there are any issues, please address them before submitting your pull request.
+
+**Stage and commit your changes using Git✅:** 
+
+`git add path/to/specific/file`
+
+`git commit -m "Descriptive message about changes in that file"`
 
 (Use descriptive commit messages that start with an action verb and clearly explain what you changed.)
 
 #### 3. Push Your Branch🛠️:
 
-Push your branch to the remote repository on GitHub:
+Once all tests pass without any issues push your branch to the remote repository on GitHub, referencing the issue it addresses. Use the following command:
 
 `
-git push origin fix-bug-in-feature-x`
+git push origin branch-name`
 
-#### 4. Open a Pull Request (PR):
+Additionally, include a note in your pull request (PR) indicating whether it will fix, close, or address the linked issue. Every PR should be associated with at least one issue.
+
+#### 4. Open a Pull Request (PR)📦:
 
 On GitHub, navigate to your repository and go to the "Pull requests" tab.
 
@@ -88,15 +107,13 @@ Provide a clear and concise title and description for your PR.
 
 Briefly explain the changes you made and address any related issues in the description.
 
-### Proposing New Features
+### Proposing New Features🛠️
 
 ### 1. Open an Issue📝:
 
-Before diving into code, create an issue on GitHub to propose your new feature.
+To propose new features, please use the [C4GT Community Template](https://github.com/Xcov19/project-healthcare/issues/new?assignees=&labels=&projects=&template=c4gt_community.yml&title=%5BC4GT+Community%5D%3A+). This template helps ensure that all necessary details are included and makes it easier for us to review and prioritize your suggestions.
 
-Describe the feature in detail, including its purpose, benefits, and potential implementation approaches.
-
-### 2. Get Feedback and Collaborate🛠️:
+### 2. Get Feedback and Collaborate💬:
 
 Engage in discussions with the Project-Healthcare team on the issue.
 
