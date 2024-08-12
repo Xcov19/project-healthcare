@@ -9,19 +9,21 @@ For more information and documentation, see `rodi` Wiki and examples:
 """
 
 import abc
+from collections.abc import Callable
 from typing import Protocol, Tuple
 
 from rodi import Container
 
 from xcov19.app.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 from xcov19.app.settings import Settings
+from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 
 def configure_services(settings: Settings) -> Tuple[Container, Settings]:
     container = Container()
 
     container.add_instance(settings)
-    container.add_scoped(LocationQueryServiceInterface, GeolocationQueryServiceImpl)
+    container.add_scoped(LocationQueryServiceInterface, GeolocationQueryService)
 
     return container, settings
 
@@ -39,7 +41,9 @@ class LocationQueryServiceInterface[T: LocationQueryJSON](Protocol):
 
     @classmethod
     @abc.abstractmethod
-    async def resolve_coordinates(cls, query: T) -> Address:
+    async def resolve_coordinates(
+        cls, reverse_geo_lookup_svc: Callable[[T], dict], query: T
+    ) -> Address:
         raise NotImplementedError
 
     @classmethod
@@ -49,10 +53,16 @@ class LocationQueryServiceInterface[T: LocationQueryJSON](Protocol):
 
 
 # TODO: make hard-coded response functional
-class GeolocationQueryServiceImpl(LocationQueryServiceInterface):
+class GeolocationQueryService(
+    LocationQueryServiceInterface, InterfaceProtocolCheckMixin
+):
     @classmethod
-    async def resolve_coordinates(cls, query: LocationQueryJSON) -> Address:
-        return Address()
+    async def resolve_coordinates(
+        cls,
+        reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        query: LocationQueryJSON,
+    ) -> Address:
+        return Address(**reverse_geo_lookup_svc(query))
 
     @classmethod
     async def fetch_facilities(cls, query: LocationQueryJSON) -> FacilitiesResult:

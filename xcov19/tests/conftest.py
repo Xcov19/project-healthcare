@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 import pytest
 
 from xcov19.app.dto import (
@@ -9,6 +11,7 @@ from xcov19.app.dto import (
     FacilitiesResult,
 )
 from xcov19.app.services import LocationQueryServiceInterface
+from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 # Same as using @pytest.mark.anyio
 pytestmark = pytest.mark.anyio
@@ -43,10 +46,16 @@ def stub_location_srvc():
     return StubLocationQueryServiceImpl
 
 
-class StubLocationQueryServiceImpl(LocationQueryServiceInterface):
+class StubLocationQueryServiceImpl(
+    LocationQueryServiceInterface, InterfaceProtocolCheckMixin
+):
     @classmethod
-    async def resolve_coordinates(cls, query: LocationQueryJSON) -> Address:
-        return Address()
+    async def resolve_coordinates(
+        cls,
+        reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        query: LocationQueryJSON,
+    ) -> Address:
+        return Address(**reverse_geo_lookup_svc(query))
 
     @classmethod
     async def fetch_facilities(cls, query: LocationQueryJSON) -> FacilitiesResult:
