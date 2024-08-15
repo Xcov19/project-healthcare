@@ -21,8 +21,18 @@ Change directories into the newly cloned project-healthcare folder:
 ## Setting Up Your Development Environment
 ### - Install Dependencies:
 
-Ensure you have the necessary tools and libraries installed to develop for Project-Healthcare. Refer to the project's documentation for specific instructions. 
+#### Set Up the Development Environment
 
+Run this command to use Poetry for installing all necessary tools and libraries in your virtual environment, ensuring everything works correctly with pre-commit:
+
+`make install` 
+
+#### Install Code Quality Tools
+
+Use this command to set up automatic checks that will help catch errors in your code before you commit it:
+
+`pre-commit install`
+ 
 ### - Configure Your Editor (Optional):
 
 Set up your preferred code editor or IDE for a smooth development experience. Consider installing extensions or plugins for syntax highlighting, code completion, and debugging specific to the programming languages used in the project.
@@ -62,17 +72,18 @@ Edit the code to address the bug or implement the new feature.
 
 To ensure your changes align with our guidelines, please follow these steps to test them:
 
-Testing Framework: We use pytest as our test runner. This helps us ensure that the codebase remains reliable and any new changes are correctly implemented.
+Testing Framework: We use pytest as our test runner. This helps us ensure that the codebase remains reliable and any new changes are correctly implemented. 
 
 Locate Test Files: You can find the test files in the [tests directory](./xcov19/tests).
 
-Run Tests: Make sure you have pytest installed. If not, install it using:
+Run Tests: Set up a virtual environment and run the following command. This will install all required dependencies, including those needed for testing.
 
 `
-pip install pytest
+make install
 `
 
 Navigate to the [tests directory](./xcov19/tests) and run the tests with the command 
+
 `
 pytest
 `
