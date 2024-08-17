@@ -78,10 +78,10 @@ See [Projects](https://github.com/Xcov19/project-healthcare/projects?query=is%3A
 
 ### TODOs:
 
-- [ ] Add standard documentation in README.md
+- [x] Add standard documentation in README.md
 - [ ] Add Getting Started · Learn the Basics,  Community and Support links. A contributor must know what the high level UML / block level diagram of this ecosystem looks like.
 - [ ] Strategic roadmap
-- [ ] CONTRIBUTING.md file
+- [x] CONTRIBUTING.md file
 - [ ] Add routes logic
 - [ ] Add domain entity and aggregate business logic
 - [ ] Add unit tests against services
@@ -89,7 +89,7 @@ See [Projects](https://github.com/Xcov19/project-healthcare/projects?query=is%3A
 - [ ] Adding fast and long running test pipeline in github CI for PRs: All unit tests are to be marked fast. All automated Integration and Automation tests are long running.
 - [ ] CI/CD: Building and hosting staged and prod instance. I have shortlisted on few easy to deploy PaaS. We earlier used GCP but have moved away from al major cloud platforms.
 - [ ] Add services for patient and provider
-- [ ] Add OpenAPI endpoints for services
+- [x] Add OpenAPI endpoints for services
 - [ ] Add datastore integration to services
 - [ ] Add API test suite for endpoints
 
