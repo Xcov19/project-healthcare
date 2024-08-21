@@ -8,15 +8,19 @@ For more information and documentation, see `rodi` Wiki and examples:
     https://github.com/Neoteroi/rodi/tree/main/examples
 """
 
+from __future__ import annotations
+
 import abc
 from collections.abc import Callable
-from typing import Protocol, Tuple, List
+from typing import Protocol, Tuple, List, TypeVar
 
 from rodi import Container
 
 from xcov19.app.dto import Address, LocationQueryJSON, FacilitiesResult
 from xcov19.app.settings import Settings
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
+
+T = TypeVar("T", bound=LocationQueryJSON)
 
 
 def configure_services(settings: Settings) -> Tuple[Container, Settings]:
@@ -82,3 +86,7 @@ class GeolocationQueryService(
         """Fetches facilities for a query location for a query id for a customer."""
         patient_address = await cls.resolve_coordinates(reverse_geo_lookup_svc, query)
         return patient_query_lookup_svc(patient_address, query) or None
+
+
+# TODO: Implement reverse_geo_lookup_svc
+# TODO: Implement following method in patient_query_lookup_svc:

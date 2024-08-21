@@ -1,4 +1,40 @@
 import inspect
+import operator
+from typing import Tuple, Any, TypeVar, get_type_hints
+
+
+ClassNameAttrGetter = operator.attrgetter("__name__")
+BoundAttrGetter = operator.attrgetter("__bound__")
+
+
+def match_signature(
+    cls_signature: Tuple[str, Any], subclass_signature: Tuple[str, Any]
+):
+    """Match inspect signature by their names and type annotation."""
+    param_name, param_type = cls_signature
+    subcls_param_name, subcls_param_type = subclass_signature
+    if param_name != subcls_param_name:
+        raise NotImplementedError(
+            f"""Method name mismatch:
+                            Expected: {param_name}
+                            Got: {subcls_param_name}
+                            """
+        )
+
+    if ClassNameAttrGetter(param_type) != ClassNameAttrGetter(subcls_param_type):
+        if (
+            isinstance(param_type, TypeVar)
+            and BoundAttrGetter(param_type) == subcls_param_type
+        ):
+            return True
+        raise NotImplementedError(
+            f"""
+                            Signature mismatch for parameter {param_name}:
+                            Expected: {param_type}
+                            Got: {subcls_param_type}
+                            """
+        )
+    return True
 
 
 class InterfaceProtocolCheckMixin:
@@ -10,18 +46,24 @@ class InterfaceProtocolCheckMixin:
 
     def __init_subclass__(cls, **kwargs):
         parent_class = inspect.getmro(cls)[1]
+        # raise Exception(inspect.getmembers(cls, predicate=inspect.isfunction))
         for defined_method in (
-            method
-            for method in dir(cls)
-            if not method.startswith("__") and callable(getattr(cls, method))
+            method_name
+            for method_name, _ in inspect.getmembers(cls, predicate=inspect.ismethod)
+            if not method_name.startswith("__")
         ):
+            # TODO: Raise if either classes don't have the method declared.
             cls_method = getattr(parent_class, defined_method)
             subclass_method = getattr(cls, defined_method)
-            cls_method_params = inspect.signature(cls_method).parameters
-            subclass_method_params = inspect.signature(subclass_method).parameters
-            if cls_method_params.keys() != subclass_method_params.keys():
-                raise NotImplementedError(f"""Signature for {defined_method} not correct:
-                Expected: {list(cls_method_params.keys())}
-                Got: {list(subclass_method_params.keys())}
+            cls_method_params: dict = get_type_hints(cls_method)
+            subclass_method_params: dict = get_type_hints(subclass_method)
+            if len(cls_method_params) != len(subclass_method_params):
+                raise NotImplementedError(f"""Method parameters mismatch:
+                Expected: {cls_method_params.keys()}
+                Got: {subclass_method_params.keys()}
                 """)
+            for cls_signature, subclass_signature in zip(
+                cls_method_params.items(), subclass_method_params.items()
+            ):
+                match_signature(cls_signature, subclass_signature)
         super().__init_subclass__(**kwargs)

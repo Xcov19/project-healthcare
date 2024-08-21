@@ -91,3 +91,8 @@ class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
             self.dummy_geolocation,
         )
         self.assertIsNone(result)
+
+
+class PatientQueryLookupSvcTest(unittest.TestCase):
+    @pytest.mark.skip("In a seperate class.")
+    def test_patient_query_lookup_svc(self): ...
