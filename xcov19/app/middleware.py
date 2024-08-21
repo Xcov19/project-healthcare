@@ -2,7 +2,7 @@ from typing import Callable, Awaitable
 
 from blacksheep import Application, Request, Response, bad_request
 
-from xcov19.app.dto import FromOriginMatchHeader
+from xcov19.app.settings import FromOriginMatchHeader
 
 
 def configure_middleware(app: Application, *middlewares):

@@ -1,12 +1,6 @@
-from blacksheep import FromHeader
 from pydantic import BaseModel, Field
 
 from typing import Annotated, List
-
-
-class FromOriginMatchHeader(FromHeader[str]):
-    name = "X-Origin-Match-Header"
-    secret = "secret"
 
 
 class GeoLocation(BaseModel):

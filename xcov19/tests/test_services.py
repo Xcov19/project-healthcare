@@ -1,8 +1,11 @@
 import pytest
 import unittest
 
-from xcov19.app.services import LocationQueryServiceInterface, GeolocationQueryService
-from xcov19.app.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
+from xcov19.services.geolocation import (
+    LocationQueryServiceInterface,
+    GeolocationQueryService,
+)
+from xcov19.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 
 
 def dummy_reverse_geo_lookup_svc(query: LocationQueryJSON) -> dict:

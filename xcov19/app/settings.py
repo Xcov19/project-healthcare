@@ -7,6 +7,7 @@ values.
 https://docs.pydantic.dev/latest/usage/settings/
 """
 
+from blacksheep import FromHeader
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -38,3 +39,8 @@ class Settings(BaseSettings):
 
 def load_settings() -> Settings:
     return Settings()
+
+
+class FromOriginMatchHeader(FromHeader[str]):
+    name = "X-Origin-Match-Header"
+    secret = "secret"

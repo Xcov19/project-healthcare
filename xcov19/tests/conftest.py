@@ -3,7 +3,7 @@ from typing import List
 
 import pytest
 
-from xcov19.app.dto import (
+from xcov19.dto import (
     AnonymousId,
     GeoLocation,
     LocationQueryJSON,
@@ -11,7 +11,7 @@ from xcov19.app.dto import (
     Address,
     FacilitiesResult,
 )
-from xcov19.app.services import LocationQueryServiceInterface
+from xcov19.services.geolocation import LocationQueryServiceInterface
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 # Same as using @pytest.mark.anyio
