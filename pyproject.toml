@@ -17,7 +17,7 @@ pydantic-settings = {version = "^2.3.4", markers = "sys_platform != 'win32'"}
 
 # [tool.poetry.group.dev.dependencies]
 
-ruff = { version = "^0.6.1", optional = true }
+ruff = { version = "^0.6.2", optional = true }
 mypy = { version = "^1.10.1", optional = true }
 blacksheep-cli = { version = "^0.0.4", optional = true }
 rich = { version = "^13.7.1", optional = true }
