@@ -4,7 +4,8 @@ from blacksheep import Response, FromJSON, json
 from blacksheep.server.controllers import APIController
 from xcov19.app.controllers import post
 
-from xcov19.app.dto import DiagnosisQueryJSON, FromOriginMatchHeader
+from xcov19.dto import DiagnosisQueryJSON
+from xcov19.app.settings import FromOriginMatchHeader
 
 
 class DiagnosisController(APIController):

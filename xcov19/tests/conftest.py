@@ -3,7 +3,7 @@ from typing import List
 
 import pytest
 
-from xcov19.app.dto import (
+from xcov19.dto import (
     AnonymousId,
     GeoLocation,
     LocationQueryJSON,
@@ -11,7 +11,7 @@ from xcov19.app.dto import (
     Address,
     FacilitiesResult,
 )
-from xcov19.app.services import LocationQueryServiceInterface
+from xcov19.services.geolocation import LocationQueryServiceInterface
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 # Same as using @pytest.mark.anyio
@@ -34,7 +34,7 @@ def dummy_coordinates():
 
 
 @pytest.fixture(scope="class")
-def dummy_geolocation(dummy_coordinates):
+def dummy_geolocation_query_json(dummy_coordinates):
     return LocationQueryJSON(
         location=dummy_coordinates,
         cust_id=AnonymousId(cust_id="test_cust_id"),
@@ -62,10 +62,10 @@ class StubLocationQueryServiceImpl(
     async def fetch_facilities(
         cls,
         reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        query: LocationQueryJSON,
         patient_query_lookup_svc: Callable[
             [Address, LocationQueryJSON], List[FacilitiesResult]
         ],
-        query: LocationQueryJSON,
     ) -> List[FacilitiesResult] | None:
         return [
             FacilitiesResult(

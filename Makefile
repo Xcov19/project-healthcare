@@ -12,3 +12,6 @@ pip-install:
 
 test:
 	pytest -s xcov19/tests/
+
+todos:
+	@grep -rn "TODO:" xcov19/ --exclude-dir=node_modules --include="*.py"

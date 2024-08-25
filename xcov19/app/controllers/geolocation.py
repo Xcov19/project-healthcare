@@ -4,9 +4,10 @@ from blacksheep import Response, ok, FromJSON
 from blacksheep.server.controllers import APIController
 
 from xcov19.app.controllers import post
-from xcov19.app.dto import FromOriginMatchHeader, LocationQueryJSON
+from xcov19.dto import LocationQueryJSON
+from xcov19.app.settings import FromOriginMatchHeader
 
-from xcov19.app.services import LocationQueryServiceInterface
+from xcov19.services.geolocation import LocationQueryServiceInterface
 
 
 class GeolocationController(APIController):
