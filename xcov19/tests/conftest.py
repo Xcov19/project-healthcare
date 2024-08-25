@@ -34,7 +34,7 @@ def dummy_coordinates():
 
 
 @pytest.fixture(scope="class")
-def dummy_geolocation(dummy_coordinates):
+def dummy_geolocation_query_json(dummy_coordinates):
     return LocationQueryJSON(
         location=dummy_coordinates,
         cust_id=AnonymousId(cust_id="test_cust_id"),
@@ -62,10 +62,10 @@ class StubLocationQueryServiceImpl(
     async def fetch_facilities(
         cls,
         reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        query: LocationQueryJSON,
         patient_query_lookup_svc: Callable[
             [Address, LocationQueryJSON], List[FacilitiesResult]
         ],
-        query: LocationQueryJSON,
     ) -> List[FacilitiesResult] | None:
         return [
             FacilitiesResult(
