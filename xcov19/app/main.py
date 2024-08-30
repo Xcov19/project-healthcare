@@ -27,6 +27,7 @@ def configure_application(
     configure_authentication(app, settings)
     configure_middleware(app, origin_header_middleware)
     configure_docs(app, settings)
+    # TODO: Add configure_database(app, settings)
     return app
 
 
