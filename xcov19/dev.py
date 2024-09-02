@@ -44,6 +44,9 @@ if __name__ == "__main__":
 
         config.bind = [f"0.0.0.0:{port}"]
         config.debug = True
+        config.accesslog = "-"
+        config.errorlog = "-"
+
         config.use_reloader = True
 
         asyncio.run(serve(app, config))

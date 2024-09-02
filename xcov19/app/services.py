@@ -14,6 +14,7 @@ from typing import Tuple
 
 from rodi import Container
 
+
 from xcov19.app.settings import Settings
 from xcov19.services.geolocation import (
     LocationQueryServiceInterface,
