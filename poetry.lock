@@ -1806,4 +1806,4 @@ test = ["anyio", "pytest", "pytest-asyncio"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "1507033c45d82ece31fe123e08723b0af1845e1a27c6c9b802b27443ca9b86fd"
+content-hash = "dd05d511d284eba3e43a4d3af259289b5cad5a3449c8345b6bacf4df413777ed"
