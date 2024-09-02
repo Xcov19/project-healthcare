@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     # export app_app='{"show_error_details": True}'
     app: App = App()
 
+    db_engine_url: str = "sqlite+aiosqlite:///"  # "sqlite+aiosqlite:///xcov19.db"
+
     model_config = SettingsConfigDict(env_prefix="APP_")
 
 
