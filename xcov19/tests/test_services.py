@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import List
 import pytest
 import unittest
@@ -21,34 +22,6 @@ from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 import random
 
 RANDOM_SEED = random.seed(1)
-
-
-def dummy_reverse_geo_lookup_svc(query: LocationQueryJSON) -> dict:
-    return {}
-
-
-def dummy_patient_query_lookup_svc_none(
-    address: Address, query: LocationQueryJSON
-) -> list:
-    return []
-
-
-def dummy_patient_query_lookup_svc(address: Address, query: LocationQueryJSON) -> list:
-    return [
-        FacilitiesResult(
-            name="Test facility",
-            address=Address(),
-            geolocation=GeoLocation(lat=0.0, lng=0.0),
-            contact="+919999999999",
-            facility_type="nursing",
-            ownership="charity",
-            specialties=["surgery", "pediatrics"],
-            stars=4,
-            reviews=120,
-            rank=random.randint(1, 20),
-            estimated_time=20,
-        )
-    ]
 
 
 class DummyProviderRepo(IProviderRepository[Provider], InterfaceProtocolCheckMixin):
@@ -118,28 +91,37 @@ def stub_get_facilities_by_patient_query(
     return facilities_result
 
 
-@pytest.mark.usefixtures("dummy_geolocation_query_json", "stub_location_srvc")
+@pytest.mark.usefixtures(
+    "dummy_geolocation_query_json",
+    "dummy_reverse_geo_lookup_svc",
+    "dummy_patient_query_lookup_svc",
+    "stub_location_srvc",
+)
 class GeoLocationServiceInterfaceTest(unittest.IsolatedAsyncioTestCase):
     @pytest.fixture(autouse=True)
     def autouse(
         self,
         dummy_geolocation_query_json: LocationQueryJSON,
+        dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        dummy_patient_query_lookup_svc: Callable[[Address, LocationQueryJSON], list],
         stub_location_srvc: LocationQueryServiceInterface,
     ):
         self.dummy_geolocation_query_json = dummy_geolocation_query_json
+        self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
+        self.dummy_patient_query_lookup_svc = dummy_patient_query_lookup_svc
         self.stub_location_srvc = stub_location_srvc
 
     async def test_resolve_coordinates(self):
         result = await self.stub_location_srvc.resolve_coordinates(
-            dummy_reverse_geo_lookup_svc, self.dummy_geolocation_query_json
+            self.dummy_reverse_geo_lookup_svc, self.dummy_geolocation_query_json
         )
         self.assertEqual(Address(), result)
 
     async def test_fetch_facilities(self):
         result = await self.stub_location_srvc.fetch_facilities(
-            dummy_reverse_geo_lookup_svc,
+            self.dummy_reverse_geo_lookup_svc,
             self.dummy_geolocation_query_json,
-            dummy_patient_query_lookup_svc,
+            self.dummy_patient_query_lookup_svc,
         )
         self.assertIsInstance(result, list)
         assert result
@@ -148,24 +130,40 @@ class GeoLocationServiceInterfaceTest(unittest.IsolatedAsyncioTestCase):
         )
 
 
-@pytest.mark.usefixtures("dummy_geolocation_query_json")
+@pytest.mark.usefixtures(
+    "dummy_geolocation_query_json",
+    "dummy_reverse_geo_lookup_svc",
+    "dummy_patient_query_lookup_svc",
+    "dummy_patient_query_lookup_svc_none",
+)
 class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
     @pytest.fixture(autouse=True)
-    def autouse(self, dummy_geolocation_query_json: LocationQueryJSON):
+    def autouse(
+        self,
+        dummy_geolocation_query_json: LocationQueryJSON,
+        dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+        dummy_patient_query_lookup_svc: Callable[[Address, LocationQueryJSON], list],
+        dummy_patient_query_lookup_svc_none: Callable[
+            [Address, LocationQueryJSON], list
+        ],
+    ):
         self.dummy_geolocation_query_json = dummy_geolocation_query_json
+        self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
+        self.dummy_patient_query_lookup_svc = dummy_patient_query_lookup_svc
+        self.dummy_patient_query_lookup_svc_none = dummy_patient_query_lookup_svc_none
 
     async def test_resolve_coordinates(self):
         result = await GeolocationQueryService.resolve_coordinates(
-            dummy_reverse_geo_lookup_svc, self.dummy_geolocation_query_json
+            self.dummy_reverse_geo_lookup_svc, self.dummy_geolocation_query_json
         )
         expected = Address()
         self.assertEqual(expected, result, f"Got {result}, expected {expected}")
 
     async def test_fetch_facilities(self):
         result = await GeolocationQueryService.fetch_facilities(
-            dummy_reverse_geo_lookup_svc,
+            self.dummy_reverse_geo_lookup_svc,
             self.dummy_geolocation_query_json,
-            dummy_patient_query_lookup_svc,
+            self.dummy_patient_query_lookup_svc,
         )
         self.assertIsNotNone(result)
         record = None
@@ -175,23 +173,44 @@ class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_fetch_facilities_no_results(self):
         result = await GeolocationQueryService.fetch_facilities(
-            dummy_reverse_geo_lookup_svc,
+            self.dummy_reverse_geo_lookup_svc,
             self.dummy_geolocation_query_json,
-            dummy_patient_query_lookup_svc_none,
+            self.dummy_patient_query_lookup_svc_none,
         )
         self.assertIsNone(result)
 
 
-# @pytest.mark.skip("WIP")
-@pytest.mark.usefixtures("dummy_geolocation_query_json")
+@pytest.mark.skip(reason="WIP")
+@pytest.mark.integration
+class GeoLocationServiceSqlRepoTest(unittest.IsolatedAsyncioTestCase):
+    """Test case for Sqlite Repository to test Geolocation Service.
+
+    Before testing, ensure to:
+    1. Setup Database
+    2. For fetch_facilities, relevant services are configured.
+    3. patient_query_lookup_svc is configured to call sqlite repository.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+
+    async def test_fetch_facilities(self): ...
+
+
+@pytest.mark.usefixtures("dummy_geolocation_query_json", "dummy_reverse_geo_lookup_svc")
 class PatientQueryLookupSvcTest(unittest.IsolatedAsyncioTestCase):
     @pytest.fixture(autouse=True)
-    def autouse(self, dummy_geolocation_query_json: LocationQueryJSON):
+    def autouse(
+        self,
+        dummy_geolocation_query_json: LocationQueryJSON,
+        dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+    ):
         self.dummy_geolocation_query_json = dummy_geolocation_query_json
+        self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
 
     async def test_patient_query_lookup_svc(self):
         providers = await GeolocationQueryService.fetch_facilities(
-            dummy_reverse_geo_lookup_svc,
+            self.dummy_reverse_geo_lookup_svc,
             self.dummy_geolocation_query_json,
             stub_get_facilities_by_patient_query,
         )
