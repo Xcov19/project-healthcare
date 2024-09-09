@@ -37,7 +37,7 @@ Use this command to set up automatic checks that will help catch errors in your 
 
 Set up your preferred code editor or IDE for a smooth development experience. Consider installing extensions or plugins for syntax highlighting, code completion, and debugging specific to the programming languages used in the project.
 
-## Reporting Bugs 🐞
+## Reporting Bugs Or Issues 🐞
 
 Before reporting a bug, please determine the type of issue you're encountering:
 
@@ -54,6 +54,48 @@ Go through the [open issues](https://github.com/Xcov19/project-healthcare/issues
 ### 2. If the Issue Isn't Reported📝:
 
 Open a new issue on GitHub by following the most appropriate template as mentioned above. Provide clear and concise details to help the team understand and reproduce the bug.
+
+#### Helpful Bug Report Template
+
+Consider following this format for clarity:
+-  Summary: Brief description of the issue.
+-  Steps to Reproduce: Clear steps to replicate the issue.
+-  Expected Behavior: What you expected to happen.
+-  Actual Behavior: What actually happened, including relevant error messages.
+-  Code/Configuration: Share code snippets or configuration files.
+-  Screenshots/Images: If applicable, include screenshots.
+
+### 3. If you get stuck while working on an Issue
+
+If you encounter a bug or get stuck while working on an issue, please follow these steps to ensure your findings are shared in a way that helps others understand and reproduce the problem:
+
+#### 1. Include Clear Steps to Reproduce
+- Provide a step-by-step guide on how the issue can be reproduced.
+- Include the environment setup (e.g., OS, Programming language/Python version, dependencies) where the bug occurs.
+
+#### 2. Share the Error Output and Code Separately
+- If there’s a traceback or error message, paste it in text format with relevant markdown formatting. Avoid sharing only screenshots of the error.
+- Provide the relevant code snippet that causes the issue. If it’s a test, share the entire test case that reproduces the bug.
+- Example format:
+```bash
+
+Traceback (most recent call last):
+    ...
+    raise NotImplementedError(f"""Signature for {defined_method} not correct:
+NotImplementedError: Signature for method_with_params not correct:
+                Expected: ['self', 'param1', 'param2']
+                Got: ['self', 'param1']
+```
+
+#### 3. Screenshots as Supplementary Evidence
+Use screenshots as supplementary information to showcase any visual issues or UI-specific bugs. However, ensure the primary details like code, errors, and steps are shared as text.
+
+#### 4. Link to Issue or Pull Request
+Whenever possible, link your findings to the relevant GitHub issue or pull request to keep the context consistent.
+
+#### 5. Follow the Issue Description
+Double-check the issue description and goals before posting to ensure your submission aligns with the intended scope. If the issue states a specific requirement, verify that your shared code and bug details address this point.
+
 
 ## Submitting a Patch
 
