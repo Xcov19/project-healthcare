@@ -134,6 +134,9 @@ Previously supported as [Hollie’s Hub for Good](https://www.digitalocean.com/c
 #### [Helpful Engineering](https://helpfulengineering.org/)
 ![Helpful Engineering](https://helpfulengineering.org/wp-content/uploads/2021/08/HelpfulEngineering_textmark.svg)
 
+#### [Code 4 GovTech](https://www.codeforgovtech.in/)
+![Logo_v1205_3](https://github.com/user-attachments/assets/c304523c-7e78-4642-8c1f-b8cff2334892)
+
 #### [My Health Connect Society](https://www.myhealthconnect.in)
 ![Logo_MyHealthConnect_v2](https://github.com/user-attachments/assets/6fc6df71-682c-4efe-b1b1-cc21811ec250)
 
