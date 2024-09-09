@@ -69,8 +69,10 @@ PORT=44777
 ### Sandbox for reference
 A reference instance exists on [![Render](https://gist.github.com/cxmeel/0dbc95191f239b631c3874f4ccf114e2/raw/SERVICE-animated.svg)](https://project-healthcare.onrender.com/docs)
 
-
 See [Deploy](#deploy) to spin up your own instance.
+
+## Contributing
+See [CONTRIBUTING](/CONTRIBUTING.md)
 
 ## Project Management 
 
@@ -82,12 +84,12 @@ See [Projects](https://github.com/Xcov19/project-healthcare/projects?query=is%3A
 - [ ] Add Getting Started · Learn the Basics,  Community and Support links. A contributor must know what the high level UML / block level diagram of this ecosystem looks like.
 - [ ] Strategic roadmap
 - [x] CONTRIBUTING.md file
-- [ ] Add routes logic
-- [ ] Add domain entity and aggregate business logic
+- [x] Add routes logic
+- [x] Add domain entity and aggregate business logic
 - [ ] Add unit tests against services
 - [ ] Containerization 
 - [ ] Adding fast and long running test pipeline in github CI for PRs: All unit tests are to be marked fast. All automated Integration and Automation tests are long running.
-- [ ] CI/CD: Building and hosting staged and prod instance. I have shortlisted on few easy to deploy PaaS. We earlier used GCP but have moved away from al major cloud platforms.
+- [x] CI/CD: Building and hosting staged and prod instance. I have shortlisted on few easy to deploy PaaS. We earlier used GCP but have moved away from al major cloud platforms.
 - [ ] Add services for patient and provider
 - [x] Add OpenAPI endpoints for services
 - [ ] Add datastore integration to services
