@@ -4,7 +4,7 @@ from typing import List
 from blacksheep.testing import TestClient
 import pytest
 
-from xcov19.tests.start_server import start_server
+from blacksheep import Application
 from xcov19.dto import (
     AnonymousId,
     GeoLocation,
@@ -35,12 +35,12 @@ def anyio_backend(request):
 
 
 @pytest.fixture(scope="class")
-def dummy_coordinates():
+def dummy_coordinates() -> GeoLocation:
     return GeoLocation(lat=0, lng=0)
 
 
 @pytest.fixture(scope="class")
-def dummy_geolocation_query_json(dummy_coordinates):
+def dummy_geolocation_query_json(dummy_coordinates) -> LocationQueryJSON:
     return LocationQueryJSON(
         location=dummy_coordinates,
         cust_id=AnonymousId(cust_id="test_cust_id"),
@@ -131,11 +131,9 @@ def stub_location_srvc() -> LocationQueryServiceInterface:
 
 
 @pytest.fixture(scope="function", name="client")
-async def test_client() -> TestClient:
+async def test_client():
     # Create a test client
-    app = await anext(start_server())
-    return TestClient(app)
+    async def start_client(app: Application) -> TestClient:
+        return TestClient(app)
 
-
-@pytest.fixture(scope="function", name="db_setup")
-async def setup_database(): ...
+    return start_client

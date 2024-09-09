@@ -2,6 +2,9 @@ from collections.abc import Callable
 from typing import List
 import pytest
 import unittest
+
+from rodi import ContainerProtocol
+from xcov19.tests.start_server import start_server
 from xcov19.domain.models.provider import (
     Contact,
     FacilityEstablishment,
@@ -20,6 +23,8 @@ from xcov19.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 import random
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 RANDOM_SEED = random.seed(1)
 
@@ -182,7 +187,8 @@ class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
 
 @pytest.mark.skip(reason="WIP")
 @pytest.mark.integration
-class GeoLocationServiceSqlRepoTest(unittest.IsolatedAsyncioTestCase):
+@pytest.mark.usefixtures("dummy_reverse_geo_lookup_svc", "dummy_geolocation_query_json")
+class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
     """Test case for Sqlite Repository to test Geolocation Service.
 
     Before testing, ensure to:
@@ -191,10 +197,31 @@ class GeoLocationServiceSqlRepoTest(unittest.IsolatedAsyncioTestCase):
     3. patient_query_lookup_svc is configured to call sqlite repository.
     """
 
-    def setUp(self) -> None:
-        super().setUp()
+    async def asyncSetUp(self) -> None:
+        app = await anext(start_server())
+        self._container: ContainerProtocol = app.services
+        self._seed_db(self._container.resolve(AsyncSession))
+        await super().asyncSetUp()
 
-    async def test_fetch_facilities(self): ...
+    def _seed_db(self, session: AsyncSession) -> None:
+        # TODO: add data to sqlite tables based on dummy_geolocation_query_json
+        # and add providers data.
+        ...
+
+    def _patient_query_lookup_svc_using_repo(
+        self, address: Address, query: LocationQueryJSON
+    ) -> Callable[[Address, LocationQueryJSON], List[FacilitiesResult]]: ...
+
+    async def test_fetch_facilities(
+        self, dummy_reverse_geo_lookup_svc, dummy_geolocation_query_json
+    ):
+        # TODO Implement test_fetch_facilities like this:
+        # providers = await GeolocationQueryService.fetch_facilities(
+        #     dummy_reverse_geo_lookup_svc,
+        #     dummy_geolocation_query_json,
+        #     self._patient_query_lookup_svc_using_repo
+        # )
+        ...
 
 
 @pytest.mark.usefixtures("dummy_geolocation_query_json", "dummy_reverse_geo_lookup_svc")
