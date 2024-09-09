@@ -1,10 +1,13 @@
 from collections.abc import Callable
+from contextlib import AsyncExitStack
 from typing import List
 import pytest
 import unittest
 
-from rodi import ContainerProtocol
-from xcov19.tests.start_server import start_server
+from rodi import Container, ContainerProtocol
+from xcov19.app.database import start_db_session
+from xcov19.tests.data.seed_db import seed_data
+from xcov19.tests.start_server import start_test_database
 from xcov19.domain.models.provider import (
     Contact,
     FacilityEstablishment,
@@ -24,7 +27,8 @@ from xcov19.utils.mixins import InterfaceProtocolCheckMixin
 
 import random
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
+
 
 RANDOM_SEED = random.seed(1)
 
@@ -185,7 +189,7 @@ class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(result)
 
 
-@pytest.mark.skip(reason="WIP")
+# @pytest.mark.skip(reason="WIP")
 @pytest.mark.integration
 @pytest.mark.usefixtures("dummy_reverse_geo_lookup_svc", "dummy_geolocation_query_json")
 class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
@@ -198,23 +202,29 @@ class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
     """
 
     async def asyncSetUp(self) -> None:
-        app = await anext(start_server())
-        self._container: ContainerProtocol = app.services
-        self._seed_db(self._container.resolve(AsyncSession))
+        self._stack = AsyncExitStack()
+        container: ContainerProtocol = Container()
+        await start_test_database(container)
+        self._session = await self._stack.enter_async_context(
+            start_db_session(container)
+        )
+        if not isinstance(self._session, AsyncSessionWrapper):
+            raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
+        await seed_data(self._session)
         await super().asyncSetUp()
 
-    def _seed_db(self, session: AsyncSession) -> None:
-        # TODO: add data to sqlite tables based on dummy_geolocation_query_json
-        # and add providers data.
-        ...
+    async def asyncTearDown(self) -> None:
+        print("async closing test server db session closing.")
+        await self._session.commit()
+        await self._stack.aclose()
+        print("async test server closing.")
+        await super().asyncTearDown()
 
     def _patient_query_lookup_svc_using_repo(
         self, address: Address, query: LocationQueryJSON
     ) -> Callable[[Address, LocationQueryJSON], List[FacilitiesResult]]: ...
 
-    async def test_fetch_facilities(
-        self, dummy_reverse_geo_lookup_svc, dummy_geolocation_query_json
-    ):
+    async def test_fetch_facilities(self):
         # TODO Implement test_fetch_facilities like this:
         # providers = await GeolocationQueryService.fetch_facilities(
         #     dummy_reverse_geo_lookup_svc,
