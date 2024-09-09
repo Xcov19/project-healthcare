@@ -11,7 +11,7 @@ pip-install:
 	pip install --prefer-binary --use-pep517  --check-build-dependencies .[dev]
 
 test:
-	APP_ENV=test APP_DB_ENGINE_URL="sqlite+aiosqlite://" pytest -s xcov19/tests/ -m "not integration"
+	APP_ENV=test APP_DB_ENGINE_URL="sqlite+aiosqlite://" pytest -s xcov19/tests/ -m "not slow and not integration and not api"
 
 test-integration:
 	APP_ENV=test APP_DB_ENGINE_URL="sqlite+aiosqlite://" pytest -s xcov19/tests/ -m "integration"
