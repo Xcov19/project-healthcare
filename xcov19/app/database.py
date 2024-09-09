@@ -1,13 +1,14 @@
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 import sys
 from rodi import Container
-from sqlmodel import SQLModel
-
+from xcov19.infra.models import SQLModel
+from sqlmodel import text
 from xcov19.app.settings import Settings
+from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     AsyncEngine,
-    AsyncSession,
     async_sessionmaker,
 )
 
@@ -38,36 +39,33 @@ class SessionFactory:
     def __init__(self, engine: AsyncEngine):
         self._engine = engine
 
-    def __call__(self) -> async_sessionmaker[AsyncSession]:
+    def __call__(self) -> async_sessionmaker[AsyncSessionWrapper]:
         return async_sessionmaker(
-            self._engine, class_=AsyncSession, expire_on_commit=False
+            self._engine, class_=AsyncSessionWrapper, expire_on_commit=False
         )
 
 
 async def setup_database(engine: AsyncEngine) -> None:
     """Sets up tables for database."""
     async with engine.begin() as conn:
+        # see: https://sqlmodel.tiangolo.com/tutorial/relationship-attributes/cascade-delete-relationships/#enable-foreign-key-support-in-sqlite
+        await conn.execute(text("PRAGMA foreign_keys=ON"))
         await conn.run_sync(SQLModel.metadata.create_all)
+        await conn.commit()
+        db_logger.info("===== Database tables setup. =====")
 
 
-async def create_async_session(
-    AsyncSessionFactory: async_sessionmaker[AsyncSession],
-) -> AsyncGenerator[AsyncSession, None]:
-    """Create an asynchronous database session."""
-    async with AsyncSessionFactory() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
-
-
-async def start_db_session(container: Container):
+@asynccontextmanager
+async def start_db_session(
+    container: Container,
+) -> AsyncGenerator[AsyncSessionWrapper, None]:
     """Starts a new database session given SessionFactory."""
     # add LocalAsyncSession
-    local_async_session = create_async_session(
-        container.resolve(async_sessionmaker[AsyncSession])
+    async_session_factory: async_sessionmaker[AsyncSessionWrapper] = container.resolve(
+        async_sessionmaker[AsyncSessionWrapper]
     )
-    container.add_instance(local_async_session, AsyncSession)
+    async with async_session_factory() as local_async_session:
+        yield local_async_session
 
 
 def configure_database_session(container: Container, settings: Settings) -> Container:
@@ -82,8 +80,9 @@ def configure_database_session(container: Container, settings: Settings) -> Cont
     container.add_instance(engine, AsyncEngine)
 
     # add sessionmaker
+    session_factory = SessionFactory(engine)
     container.add_singleton_by_factory(
-        SessionFactory(engine), async_sessionmaker[AsyncSession]
+        session_factory, async_sessionmaker[AsyncSessionWrapper]
     )
 
     db_logger.info("====== Database session configured. ======")
