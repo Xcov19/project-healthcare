@@ -8,7 +8,6 @@ from rodi import Container, ContainerProtocol
 from xcov19.app.database import (
     configure_database_session,
     setup_database,
-    start_db_session,
 )
 from xcov19.app.auth import configure_authentication
 from xcov19.app.controllers import controller_router
@@ -46,6 +45,5 @@ async def on_start():
     container: ContainerProtocol = app.services
     if not isinstance(container, Container):
         raise ValueError("Container is not a valid container")
-    await start_db_session(container)
     engine = container.resolve(AsyncEngine)
     await setup_database(engine)
