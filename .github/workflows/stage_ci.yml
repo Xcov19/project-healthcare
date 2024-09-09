@@ -23,8 +23,7 @@ jobs:
       uses: ./.github/actions
 
     - name: Run tests
-      run: |
-        poetry run pytest
+      run: make test
 
   pre-commit:
     runs-on: ubuntu-latest

@@ -44,6 +44,17 @@ testpaths = [
     "xcov19/tests",
 ]
 asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    # Add more markers as needed
+]
+# Add env vars when running pytest
+env = [
+    "APP_ENV=test",
+    "APP_DB_ENGINE_URL=sqlite+aiosqlite://"
+]
 
 [tool.pyright]
 pythonVersion = "3.12"
