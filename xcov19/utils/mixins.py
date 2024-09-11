@@ -2,7 +2,6 @@ import inspect
 import operator
 from typing import Tuple, Any, TypeVar, get_type_hints
 
-
 ClassNameAttrGetter = operator.attrgetter("__name__")
 BoundAttrGetter = operator.attrgetter("__bound__")
 
@@ -53,8 +52,24 @@ class InterfaceProtocolCheckMixin:
             if not method_name.startswith("__")
         ):
             # TODO: Raise if either classes don't have the method declared.
-            cls_method = getattr(parent_class, defined_method)
-            subclass_method = getattr(cls, defined_method)
+
+            try:
+                # Get the method from both the parent and subclass
+                cls_method = getattr(parent_class, defined_method)
+                subclass_method = getattr(cls, defined_method)
+
+                # Ensure the method is declared/overridden in the subclass and not just inherited
+                if defined_method in cls.__dict__:
+                    pass
+                else:
+                    raise NotImplementedError(
+                        f"The method '{defined_method}' is inherited from the parent class '{parent_class.__name__}' and not overridden/declared."
+                    )
+            except AttributeError:
+                raise NotImplementedError(
+                    f"Method '{defined_method}' not found in parent class."
+                )
+
             cls_method_params: dict = get_type_hints(cls_method)
             subclass_method_params: dict = get_type_hints(subclass_method)
             if len(cls_method_params) != len(subclass_method_params):
