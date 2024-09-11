@@ -197,15 +197,16 @@ class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
     3. patient_query_lookup_svc is configured to call sqlite repository.
     """
 
+    @pytest.fixture(autouse=True)
+    def autouse(
+        self,
+        dummy_geolocation_query_json: LocationQueryJSON,
+        dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+    ):
+        self.dummy_geolocation_query_json = dummy_geolocation_query_json
+        self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
+
     async def asyncSetUp(self) -> None:
-        # self._stack = AsyncExitStack()
-        # container: ContainerProtocol = Container()
-        # await start_test_database(container)
-        # self._session = await self._stack.enter_async_context(
-        #     start_db_session(container)
-        # )
-        # if not isinstance(self._session, AsyncSessionWrapper):
-        #     raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
         self._test_db = setUpTestDatabase()
         await self._test_db.setup_test_database()
         self._session = await self._test_db.start_async_session()
@@ -219,16 +220,18 @@ class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
 
     def _patient_query_lookup_svc_using_repo(
         self, address: Address, query: LocationQueryJSON
-    ) -> Callable[[Address, LocationQueryJSON], List[FacilitiesResult]]: ...
+    ) -> List[FacilitiesResult]: ...
 
     async def test_fetch_facilities(self):
         # TODO Implement test_fetch_facilities like this:
-        # providers = await GeolocationQueryService.fetch_facilities(
-        #     dummy_reverse_geo_lookup_svc,
-        #     dummy_geolocation_query_json,
-        #     self._patient_query_lookup_svc_using_repo
-        # )
-        ...
+        providers = await GeolocationQueryService.fetch_facilities(
+            self.dummy_reverse_geo_lookup_svc,
+            self.dummy_geolocation_query_json,
+            self._patient_query_lookup_svc_using_repo,
+        )
+        assert providers
+        self.assertIsInstance(providers, list)
+        self.assertIs(len(providers), 1)
 
 
 @pytest.mark.usefixtures("dummy_geolocation_query_json", "dummy_reverse_geo_lookup_svc")
