@@ -1,13 +1,12 @@
 from collections.abc import Callable
-from contextlib import AsyncExitStack
 from typing import List
 import pytest
 import unittest
+import random
 
-from rodi import Container, ContainerProtocol
-from xcov19.app.database import start_db_session
+
 from xcov19.tests.data.seed_db import seed_data
-from xcov19.tests.start_server import start_test_database
+from xcov19.tests.start_server import setUpTestDatabase
 from xcov19.domain.models.provider import (
     Contact,
     FacilityEstablishment,
@@ -24,9 +23,6 @@ from xcov19.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 
 
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
-
-import random
-
 from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
 
 
@@ -202,22 +198,23 @@ class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
     """
 
     async def asyncSetUp(self) -> None:
-        self._stack = AsyncExitStack()
-        container: ContainerProtocol = Container()
-        await start_test_database(container)
-        self._session = await self._stack.enter_async_context(
-            start_db_session(container)
-        )
-        if not isinstance(self._session, AsyncSessionWrapper):
-            raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
+        # self._stack = AsyncExitStack()
+        # container: ContainerProtocol = Container()
+        # await start_test_database(container)
+        # self._session = await self._stack.enter_async_context(
+        #     start_db_session(container)
+        # )
+        # if not isinstance(self._session, AsyncSessionWrapper):
+        #     raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
+        self._test_db = setUpTestDatabase()
+        await self._test_db.setup_test_database()
+        self._session = await self._test_db.start_async_session()
+        assert isinstance(self._session, AsyncSessionWrapper)
         await seed_data(self._session)
         await super().asyncSetUp()
 
     async def asyncTearDown(self) -> None:
-        print("async closing test server db session closing.")
-        await self._session.commit()
-        await self._stack.aclose()
-        print("async test server closing.")
+        await self._test_db.aclose()
         await super().asyncTearDown()
 
     def _patient_query_lookup_svc_using_repo(
