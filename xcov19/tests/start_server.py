@@ -12,6 +12,18 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
 
 
+class InvalidSessionTypeError(RuntimeError):
+    """Exception raised when the session is not of the expected type."""
+
+    pass
+
+
+class InvalidDIContainerTypeError(RuntimeError):
+    """Exception raised when valid DI container not found."""
+
+    pass
+
+
 @asynccontextmanager
 async def start_server(app: Application) -> AsyncGenerator[Application, None]:
     """Start a test server for automated testing."""
@@ -24,6 +36,8 @@ async def start_server(app: Application) -> AsyncGenerator[Application, None]:
 
 
 class setUpTestDatabase:
+    """Manages the lifecycle of the test database."""
+
     def __init__(self) -> None:
         self._stack = AsyncExitStack()
         self._session: AsyncSession | AsyncSessionWrapper | None = None
@@ -32,25 +46,29 @@ class setUpTestDatabase:
     async def setup_test_database(self) -> None:
         """Database setup for integration tests."""
         if not isinstance(self._container, Container):
-            raise RuntimeError("container not of type Container.")
+            raise InvalidDIContainerTypeError("Container not of valid type.")
         configure_database_session(self._container, load_settings())
         engine = self._container.resolve(AsyncEngine)
         await setup_database(engine)
 
     async def start_async_session(self) -> AsyncSession | AsyncSessionWrapper:
         if not isinstance(self._container, Container):
-            raise RuntimeError("container not of type Container.")
+            raise InvalidDIContainerTypeError("Container not of valid type.")
         self._session = await self._stack.enter_async_context(
             start_db_session(self._container)
         )
         if not isinstance(self._session, AsyncSessionWrapper):
-            raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
+            raise InvalidSessionTypeError(
+                f"{self._session} is not a AsyncSessionWrapper value."
+            )
         return self._session
 
     async def aclose(self) -> None:
         print("async closing test server db session closing.")
         if not isinstance(self._session, AsyncSessionWrapper):
-            raise RuntimeError(f"{self._session} is not a AsyncSessionWrapper value.")
+            raise InvalidSessionTypeError(
+                f"{self._session} is not a AsyncSessionWrapper value."
+            )
         await self._session.commit()
         await self._stack.aclose()
         print("async test server closing.")

@@ -220,7 +220,10 @@ class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
 
     def _patient_query_lookup_svc_using_repo(
         self, address: Address, query: LocationQueryJSON
-    ) -> List[FacilitiesResult]: ...
+    ) -> List[FacilitiesResult]:
+        # TODO: Implement a patient query lookup service
+        # that returns type List[FacilitiesResult]
+        ...
 
     async def test_fetch_facilities(self):
         # TODO Implement test_fetch_facilities like this:
