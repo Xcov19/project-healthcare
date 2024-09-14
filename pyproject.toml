@@ -8,17 +8,17 @@ package-mode = true
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pydantic = "^2.8.2"
+pydantic = "^2.9.1"
 blacksheep = "^2.0.7"
 Hypercorn = "^0.17.3"
 MarkupSafe = "^2.1.3"
 uvloop = {version = "^0.20.0", markers = "sys_platform != 'win32'"}
 pydantic-settings = {version = "^2.3.4", markers = "sys_platform != 'win32'"}
 cython = "^3.0.11"
-sqlalchemy = {version="^2.0.23", markers = "sys_platform != 'win32'", extras = ["asyncio"]}
+sqlalchemy = {version="^2.0.34", markers = "sys_platform != 'win32'", extras = ["asyncio"]}
 alembic = "^1.13.2"
 aiosqlite = "^0.20.0"
-sqlmodel = {version="^0.0.21"}
+sqlmodel = {version="^0.0.22"}
 
 # [tool.poetry.group.dev.dependencies]
 
@@ -26,7 +26,7 @@ ruff = { version = "^0.6.3", optional = true }
 mypy = { version = "^1.11.2", optional = true }
 blacksheep-cli = { version = "^0.0.4", optional = true }
 rich = { version = "^13.8.0", optional = true }
-pyright = { version = "^1.1.378", optional = true }
+pyright = { version = "^1.1.379", optional = true }
 pre-commit = { version="^3.7.1", optional = true }
 pytest-asyncio = { version = "^0.24.0", optional = true }
 anyio = { version = "^4.4.0", optional = true }
@@ -44,6 +44,18 @@ testpaths = [
     "xcov19/tests",
 ]
 asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "api: mark api tests",
+    "unit: marks tests as unit tests",
+    # Add more markers as needed
+]
+# Add env vars when running pytest
+env = [
+    "APP_ENV=test",
+    "APP_DB_ENGINE_URL=sqlite+aiosqlite://"
+]
 
 [tool.pyright]
 pythonVersion = "3.12"
