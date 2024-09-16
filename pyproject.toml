@@ -19,13 +19,11 @@ sqlalchemy = {version="^2.0.34", markers = "sys_platform != 'win32'", extras = [
 alembic = "^1.13.2"
 aiosqlite = "^0.20.0"
 sqlmodel = {version="^0.0.22"}
-
-# [tool.poetry.group.dev.dependencies]
+rich = {version = "^13.8.0"}
 
 ruff = { version = "^0.6.3", optional = true }
 mypy = { version = "^1.11.2", optional = true }
 blacksheep-cli = { version = "^0.0.4", optional = true }
-rich = { version = "^13.8.0", optional = true }
 pyright = { version = "^1.1.379", optional = true }
 pre-commit = { version="^3.7.1", optional = true }
 pytest-asyncio = { version = "^0.24.0", optional = true }

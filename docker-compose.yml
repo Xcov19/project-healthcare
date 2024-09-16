@@ -1,0 +1,18 @@
+version: "3"
+
+x-shared-config: &shared-config
+    ports:
+        - "44777:44777"
+    volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+    logging:
+        options:
+            max-size: 0.25g
+
+services:
+    xcov19-app:
+        <<: *shared-config
+        build: 
+          context: .
+          dockerfile: Dockerfile

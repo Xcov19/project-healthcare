@@ -18,3 +18,15 @@ test-integration:
 
 todos:
 	@grep -rn "TODO:" xcov19/ --exclude-dir=node_modules --include="*.py"
+
+docker-build:
+	docker build -f Dockerfile.build -t xcov19-setup .
+
+docker-integration:
+	docker build -f Dockerfile.test-integration -t xcov19-integration-test .
+
+docker-run-server:
+	docker compose -f docker-compose.yml up --build
+
+docker-test-integration:
+	docker run -it -f Dockerfile.test-integration
