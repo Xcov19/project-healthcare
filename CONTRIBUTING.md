@@ -212,7 +212,3 @@ We appreciate your contributions to Project-Healthcare! Your efforts help us mak
 Thank you! ❤️ ❤️
 
 — The Project-Healthcare Team
-
-
-
-
