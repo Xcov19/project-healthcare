@@ -20,8 +20,6 @@ alembic = "^1.13.2"
 aiosqlite = "^0.20.0"
 sqlmodel = {version="^0.0.22"}
 
-# [tool.poetry.group.dev.dependencies]
-
 ruff = { version = "^0.6.3", optional = true }
 mypy = { version = "^1.11.2", optional = true }
 blacksheep-cli = { version = "^0.0.4", optional = true }
