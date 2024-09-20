@@ -31,6 +31,7 @@ Released under [LGPL-2.1](/LICENSE) by [@Xcov19](https://github.com/Xcov19).
 # Project Healthcare (xcov19)
 
 Project Healthcare, from hereon called the brokering service, is a set of upstream OpenAPI specification to extend any patient facing user interface looking to integrate to location-aware consultation and diagnostics facilities near them by:
+
 1. Exposing a diagnosis API to capture patient symptoms.
 2. Exposing geolocation API to caputure patient's location and offer nearby facilities to take action on based on their diagnosis and location.
 
@@ -42,6 +43,7 @@ web framework to start Web APIs, the project structure adheres blacksheep's doma
 domain driven design philosophy using ports and adapters pattern so expect slight shift towards domain models and services structure.
 
 The specification follows a sandwich service model i.e. it requires one or more upstream producer services and one downstream consumer service as follows:
+
 1. The patient facing application, known from hereon as the downstream consumer service, calls the diagnosis and geolocation API.
 2. The brokering service stores transient diagnosis request and enqueues them to upstream provider service that should return records of facilities and their specialties based on the diagnosis.
 3. The brokering service returns the records of matching facilities to the downstream consumer service.
