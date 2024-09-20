@@ -114,5 +114,7 @@ USER nonroot:nonroot
 # Install project dependencies
 ARG INSTALL_CMD="poetry install --only main --no-root --no-ansi"
 RUN if [ -z "${INSTALL_CMD}" ]; then echo "Unable to start poetry install command" && exit 1; fi
-RUN if [ -f "poetry.lock" ]; then echo "poetry lock exists. updating" && poetry lock --no-update; fi;
+RUN if [ -f "poetry.lock" ]; then \
+ echo "poetry lock exists. updating" && \
+ chmod 755 poetry.lock && poetry lock --no-update; fi;
 RUN ${INSTALL_CMD}
