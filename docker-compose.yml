@@ -2,7 +2,7 @@ version: "3"
 
 x-shared-config: &shared-config
     ports:
-        - "${PORT:-8080}:8080"
+        - "${PORT:-44777}:44777"
     restart: always
     logging:
         options:
