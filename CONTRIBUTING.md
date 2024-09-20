@@ -44,7 +44,7 @@ Set up your preferred code editor or IDE for a smooth development experience. Co
 
 `Makefile` contains actual script for setup. `docker` is replaceable with `podman` as a drop-in if you use Podman.
 
-All images use the base image from `Dockewrfile.build` for multi-stage builds.
+All images use the base image from `Dockerfile.build` for multi-stage builds.
 
 #### Set Up Container Images
 

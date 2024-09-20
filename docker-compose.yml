@@ -2,13 +2,14 @@ version: "3"
 
 x-shared-config: &shared-config
     ports:
-        - "44777:44777"
-    volumes:
-        - /var/run/docker.sock:/tmp/docker.sock:ro
+        - "${PORT:-8080}:8080"
+    volume:
+        - xcov19.db:xcov19.db
     restart: always
     logging:
         options:
             max-size: 0.25g
+            max-file: 2
 
 services:
     xcov19-app:

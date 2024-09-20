@@ -6,28 +6,28 @@ FROM ${BUILDER}:${VERSION}-slim AS python-base
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    wget \
     ca-certificates \
-    libreadline-dev \
-    libncursesw5-dev \
-    libssl-dev \
-    libffi-dev \
-    zlib1g-dev \
-    libbz2-dev \
-    liblzma-dev \
-    libsqlite3-dev \
-    tk-dev \
-    uuid-dev \
+    curl \
     git \
-    pkg-config \
+    libbz2-dev \
+    libffi-dev \
+    libgdal-dev \
     libgeos-dev \
+    liblzma-dev \
+    libncursesw5-dev \
     libproj-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libsqlite3-mod-spatialite \
+    libssl-dev \
     libxml2-dev \
     libxmlsec1-dev \
-    libgdal-dev \
-    libsqlite3-mod-spatialite \
-    curl \
+    pkg-config \
+    tk-dev \
     unzip \
+    uuid-dev \
+    wget \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Update CA certificates
@@ -44,14 +44,11 @@ RUN mkdir /build && cd /build && \
     unzip sqlite-amalgamation-${SQLITE_VERSION}.zip && \
     rm sqlite-amalgamation-${SQLITE_VERSION}.zip && \
     cd sqlite-amalgamation-${SQLITE_VERSION} && \
-    # ./configure --enable-load-extension --prefix=/usr/local && \
     gcc -DSQLITE_THREADSAFE=0 -DSQLITE_ENABLE_FTS4 \
     -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_JSON1 \
     -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_EXPLAIN_COMMENTS \
     -DHAVE_READLINE -DSQLITE_ENABLE_DBSTAT_VTAB \
     shell.c sqlite3.c -ldl -lm -lreadline -lncurses -o sqlite3 && \
-    # make -j"$(nproc)" && \
-    # make install && \
     rm -rf /build
 
 
@@ -105,8 +102,6 @@ ENV POETRY_HOME='/usr/local'
 
 # Install Poetry using the recompiled Python
 RUN curl -sSL https://install.python-poetry.org | python3 - 
-#     && \
-# ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
 # Change ownership of Poetry's cache and configuration directories
 RUN mkdir -p /var/cache/pypoetry && chown -R nonroot:nonroot /var/cache/pypoetry
