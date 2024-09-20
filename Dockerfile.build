@@ -1,0 +1,120 @@
+# Use the base image specified
+ARG VERSION=3.12.6
+ARG BUILDER=docker.io/library/python
+FROM ${BUILDER}:${VERSION}-slim AS python-base
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    libbz2-dev \
+    libffi-dev \
+    libgdal-dev \
+    libgeos-dev \
+    liblzma-dev \
+    libncursesw5-dev \
+    libproj-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libsqlite3-mod-spatialite \
+    libssl-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    pkg-config \
+    tk-dev \
+    unzip \
+    uuid-dev \
+    wget \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Update CA certificates
+RUN update-ca-certificates 2>/dev/null || true
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Compile SQLite with loadable extension support
+ENV SQLITE_VERSION=3460100
+RUN mkdir -p /build && cd /build && \
+    wget --max-redirect=0 --secure-protocol=TLSv1_2 https://www.sqlite.org/2024/sqlite-amalgamation-${SQLITE_VERSION}.zip && \
+    unzip sqlite-amalgamation-${SQLITE_VERSION}.zip && \
+    rm sqlite-amalgamation-${SQLITE_VERSION}.zip && \
+    cd sqlite-amalgamation-${SQLITE_VERSION} && \
+    gcc -DSQLITE_THREADSAFE=0 -DSQLITE_ENABLE_FTS4 \
+    -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_JSON1 \
+    -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_EXPLAIN_COMMENTS \
+    -DHAVE_READLINE -DSQLITE_ENABLE_DBSTAT_VTAB \
+    shell.c sqlite3.c -ldl -lm -lreadline -lncurses -o sqlite3 && \
+    rm -rf /build
+
+
+# Recompile Python to link against the custom SQLite
+ENV PYTHON_VERSION=3.12.6
+RUN mkdir -p /build && cd /build && \
+    wget --max-redirect=0 --secure-protocol=TLSv1_2 -q https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+    tar xzf Python-${PYTHON_VERSION}.tgz && \
+    cd Python-${PYTHON_VERSION} && \
+    ./configure \
+        --enable-optimizations \
+        --with-ensurepip=install \
+        --enable-loadable-sqlite-extensions \
+        LDFLAGS="-L/usr/local/lib" \
+        CPPFLAGS="-I/usr/local/include" \
+        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" && \
+    make -j"$(nproc)" && \
+    make altinstall && \
+    rm -rf /build
+
+# Update alternatives to point to the new Python
+RUN ln -sf /usr/local/bin/python${PYTHON_VERSION%.*} /usr/local/bin/python3
+RUN ln -sf /usr/local/bin/pip${PYTHON_VERSION%.*} /usr/local/bin/pip3
+
+# Use the base image for Python setup
+# Reuse the stage from Dockerfile.build
+FROM python-base AS xcov19-setup
+
+# Set the working directory
+WORKDIR /app
+# Create nonroot user and group
+RUN addgroup --system nonroot && adduser --system --ingroup nonroot nonroot
+
+# Change ownership of /app and /var/cache
+RUN chown -R nonroot:nonroot /app
+RUN mkdir -p /var/cache
+RUN chown -R nonroot:nonroot /var/cache
+
+# Copy the application code
+COPY --chown=nonroot:nonroot --chmod=555 xcov19 xcov19/
+COPY --chown=nonroot:nonroot --chmod=555 Makefile .
+COPY --chown=nonroot:nonroot --chmod=555 pyproject.toml .
+COPY --chown=nonroot:nonroot --chmod=555 poetry.lock .
+COPY --chown=nonroot:nonroot --chmod=555 *.sh .
+COPY --chown=nonroot:nonroot --chmod=555 LICENSE .
+
+ENV POETRY_NO_INTERACTION=1
+ENV POETRY_VIRTUALENVS_CREATE=false
+ENV POETRY_CACHE_DIR='/var/cache/pypoetry'
+ENV POETRY_HOME='/usr/local'
+
+# Install Poetry using the recompiled Python
+RUN curl --proto "=https" --tlsv1.2 -sSf -L https://install.python-poetry.org | python3 - 
+
+# Change ownership of Poetry's cache and configuration directories
+RUN mkdir -p /var/cache/pypoetry && chown -R nonroot:nonroot /var/cache/pypoetry
+RUN chown -R nonroot:nonroot /usr/local/ && chmod -R 755 /usr/local/
+
+# Switch to nonroot user
+USER nonroot:nonroot
+
+
+# Install project dependencies
+ARG INSTALL_CMD="poetry install --only main --no-root --no-ansi"
+RUN if [ -z "${INSTALL_CMD}" ]; then echo "Unable to start poetry install command" && exit 1; fi
+RUN if [ -f "poetry.lock" ]; then \
+ echo "poetry lock exists. updating" && \
+ chmod 755 poetry.lock && poetry lock --no-update; fi;
+RUN ${INSTALL_CMD}

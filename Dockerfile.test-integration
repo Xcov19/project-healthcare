@@ -1,0 +1,16 @@
+# Use the base image for Python setup
+# Reuse the stage from Dockerfile.build
+FROM xcov19-setup AS test-integration
+
+# Switch to nonroot user
+USER nonroot:nonroot
+
+ARG INSTALL_CMD="poetry install --no-root --no-ansi --extras=test"
+RUN if [ -z "${INSTALL_CMD}" ]; then echo "Unable to start poetry install command" && exit 1; fi
+RUN if [ -f "poetry.lock" ]; then echo "poetry lock exists. updating" && poetry lock --no-update; fi;
+RUN ${INSTALL_CMD}
+
+ARG START_CMD="make test-integration"
+ENV START_CMD=${START_CMD}
+RUN if [ -z "${START_CMD}" ]; then echo "Unable to detect a container start command" && exit 1; fi
+CMD ${START_CMD}
