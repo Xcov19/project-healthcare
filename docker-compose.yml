@@ -3,7 +3,7 @@ version: "3"
 x-shared-config: &shared-config
     ports:
         - "${PORT:-8080}:8080"
-    volume:
+    volumes:
         - xcov19.db:xcov19.db
     restart: always
     logging:

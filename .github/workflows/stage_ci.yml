@@ -36,5 +36,6 @@ jobs:
 
       - name: Run Pre-commit
         run: |
+          if [ -f "poetry.lock" ]; then echo "running poetry lock" && poetry lock --no-update; fi;
           poetry install --no-root --all-extras
-          if [ -f "poetry.lock" ]; then echo "running poetry lock" && poetry lock --no-update; fi; poetry run pre-commit run --all-files;
+          poetry run pre-commit run --all-files;

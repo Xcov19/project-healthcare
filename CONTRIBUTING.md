@@ -49,22 +49,29 @@ All images use the base image from `Dockerfile.build` for multi-stage builds.
 #### Set Up Container Images
 
 1. Setup base image:
-```bash
-make docker-build
-```
+
+    ```bash
+    # Build the base Docker image for the project
+    make docker-build
+    ```
+
 2. Setup integration test image:
-```bash
-make docker-integration
-```
+
+    ```bash
+    # Build the base Docker image for integration test
+    make docker-integration
+    ```
 
 #### Running Containerized Application
 
 For local smoke testing and runs:
+
 ```bash
 make docker-run-server
 ```
 
 For integration, api or end to end testing:
+
 ```bash 
 make docker-test-integration
 ```
