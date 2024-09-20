@@ -19,6 +19,9 @@ Change directories into the newly cloned project-healthcare folder:
 `cd project-healthcare`
 
 ## Setting Up Your Development Environment
+
+When you are developing features or running unit-tests, the local setup prescribed here without container setup will work fine. However, it is recommended to setup the containers as well for local integration testing and running the service in a container to emulate staging or production environment.
+
 ### - Install Dependencies:
 
 #### Set Up the Development Environment
@@ -36,6 +39,42 @@ Use this command to set up automatic checks that will help catch errors in your 
 ### - Configure Your Editor (Optional):
 
 Set up your preferred code editor or IDE for a smooth development experience. Consider installing extensions or plugins for syntax highlighting, code completion, and debugging specific to the programming languages used in the project.
+
+### - Running & Testing Containerized Setup:
+
+`Makefile` contains actual script for setup. `docker` is replaceable with `podman` as a drop-in if you use Podman.
+
+All images use the base image from `Dockerfile.build` for multi-stage builds.
+
+#### Set Up Container Images
+
+1. Setup base image:
+
+    ```bash
+    # Build the base Docker image for the project
+    make docker-build
+    ```
+
+2. Setup integration test image:
+
+    ```bash
+    # Build the base Docker image for integration test
+    make docker-integration
+    ```
+
+#### Running Containerized Application
+
+For local smoke testing and runs:
+
+```bash
+make docker-run-server
+```
+
+For integration, api or end to end testing:
+
+```bash 
+make docker-test-integration
+```
 
 ## Reporting Bugs Or Issues 🐞
 
@@ -180,7 +219,3 @@ We appreciate your contributions to Project-Healthcare! Your efforts help us mak
 Thank you! ❤️ ❤️
 
 — The Project-Healthcare Team
-
-
-
-
