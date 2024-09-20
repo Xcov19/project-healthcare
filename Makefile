@@ -1,3 +1,6 @@
+XCOV19_SETUP_IMAGE := xcov19-setup
+XCOV19_TEST_INTEGRATION_SETUP_IMAGE := xcov19-integration-test
+
 check:
 	@bash check.sh
 
@@ -18,3 +21,15 @@ test-integration:
 
 todos:
 	@grep -rn "TODO:" xcov19/ --exclude-dir=node_modules --include="*.py"
+
+docker-build:
+	docker build --load -f Dockerfile.build -t $(XCOV19_SETUP_IMAGE) .
+
+docker-integration:
+	docker build --load -f Dockerfile.test-integration -t $(XCOV19_TEST_INTEGRATION_SETUP_IMAGE) .
+
+docker-run-server:
+	docker compose -f docker-compose.yml up --build
+
+docker-test-integration:
+	make docker-integration && docker run -it -f Dockerfile.test-integration
