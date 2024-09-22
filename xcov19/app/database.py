@@ -84,14 +84,7 @@ async def setup_database(engine: AsyncEngine) -> None:
     async with engine.begin() as conn:
         # Enable extension loading
         await conn.execute(text("PRAGMA load_extension = 1"))
-        # db_logger.info("SQLAlchemy setup to load the SpatiaLite extension.")
-        # await conn.execute(text("SELECT load_extension('/opt/homebrew/Cellar/libspatialite/5.1.0_1/lib/mod_spatialite.dylib')"))
-        # await conn.execute(text("SELECT load_extension('mod_spatialite')"))
-        # see: https://sqlmodel.tiangolo.com/tutorial/relationship-attributes/cascade-delete-relationships/#enable-foreign-key-support-in-sqlite
         await conn.execute(text("PRAGMA foreign_keys=ON"))
-        # test_result = await conn.execute(text("SELECT spatialite_version() as version;"))
-        # print(f"==== Spatialite Version: {test_result.fetchone()} ====")
-
         await conn.run_sync(SQLModel.metadata.create_all)
         await conn.commit()
         db_logger.info("===== Database tables setup. =====")
