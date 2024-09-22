@@ -90,12 +90,14 @@ class PointType(UserDefinedType):
         return TypeAdapter(cls)
 
 
+def generate_uuid() -> str:
+    return str(uuid.uuid4())
+
+
 ### These tables map to the domain models for Patient
 class Patient(SQLModel, table=True):
     patient_id: str = Field(
-        sa_column=Column(
-            TEXT, unique=True, primary_key=True, default=str(uuid.uuid4())
-        ),
+        sa_column=Column(TEXT, unique=True, primary_key=True, default=generate_uuid),
         allow_mutation=False,
     )
     queries: Mapped[List["Query"]] = Relationship(
@@ -109,9 +111,7 @@ class Query(SQLModel, table=True):
     """Every Query must have both a Patient and a Location."""
 
     query_id: str = Field(
-        sa_column=Column(
-            TEXT, unique=True, primary_key=True, default=str(uuid.uuid4())
-        ),
+        sa_column=Column(TEXT, unique=True, primary_key=True, default=generate_uuid),
         allow_mutation=False,
     )
     query: str = Field(allow_mutation=False, sa_column=Column(Text))
@@ -128,9 +128,7 @@ class Location(SQLModel, table=True):
         Index("ix_location_composite_lat_lng", "latitude", "longitude", unique=True),
     )
     location_id: str = Field(
-        sa_column=Column(
-            TEXT, unique=True, primary_key=True, default=str(uuid.uuid4())
-        ),
+        sa_column=Column(TEXT, unique=True, primary_key=True, default=generate_uuid),
         allow_mutation=False,
     )
     latitude: float = Field(sa_column=Column(Float))
@@ -148,9 +146,7 @@ class Location(SQLModel, table=True):
 ### These tables map to the domain models for Provider
 class Provider(SQLModel, table=True):
     provider_id: str = Field(
-        sa_column=Column(
-            TEXT, unique=True, primary_key=True, default=str(uuid.uuid4())
-        ),
+        sa_column=Column(TEXT, unique=True, primary_key=True, default=generate_uuid),
         allow_mutation=False,
     )
     name: str = Field(
@@ -160,7 +156,7 @@ class Provider(SQLModel, table=True):
     geopoint: Annotated[
         tuple, lambda geom: PointType.pydantic_adapter().validate_python(geom)
     ] = Field(sa_column=Column(PointType, nullable=False), allow_mutation=False)
-    contact: str = Field(sa_column=Column(NUMERIC, nullable=False))
+    contact: int = Field(sa_column=Column(NUMERIC, nullable=False))
     facility_type: str = Field(sa_column=Column(TEXT, nullable=False))
     ownership_type: str = Field(sa_column=Column(TEXT, nullable=False))
     specialties: List[str] = Field(sa_column=Column(JSON, nullable=False))
