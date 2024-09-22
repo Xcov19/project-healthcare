@@ -49,34 +49,38 @@ class SessionFactory:
         )
 
 
-async def setup_database(engine: AsyncEngine) -> None:
-    """Sets up tables for database."""
+async def _load_spatialite(dbapi_conn: AsyncAdapt_aiosqlite_connection) -> None:
+    """Loads spatialite sqlite extension."""
+    conn: aiosqlite.Connection = dbapi_conn.driver_connection
+    await conn.enable_load_extension(True)
+    await conn.load_extension("mod_spatialite")
+    db_logger.info("======= PRAGMA load_extension successful =======")
+    try:
+        async with conn.execute("SELECT spatialite_version() as version") as cursor:
+            result = await cursor.fetchone()
+            db_logger.info(f"==== Spatialite Version: {result} ====")
+            db_logger.info("===== mod_spatialite loaded =====")
+    except (AttributeError, aiosqlite.OperationalError) as e:
+        db_logger.error(e)
+        raise (e)
+
+
+def setup_spatialite(engine: AsyncEngine) -> None:
+    """An event listener hook to setup spatialite using aiosqlite."""
 
     @event.listens_for(engine.sync_engine, "connect")
     def load_spatialite(
         dbapi_conn: AsyncAdapt_aiosqlite_connection, _connection_record
     ):
         loop = asyncio.get_running_loop()
-
-        async def load_async_extension():
-            conn: aiosqlite.Connection = dbapi_conn.driver_connection
-            await conn.enable_load_extension(True)
-            await conn.load_extension("mod_spatialite")
-            db_logger.info("======= PRAGMA load_extension successful =======")
-            try:
-                async with conn.execute(
-                    "SELECT spatialite_version() as version"
-                ) as cursor:
-                    result = await cursor.fetchone()
-                    db_logger.info(f"==== Spatialite Version: {result} ====")
-                    db_logger.info("===== mod_spatialite loaded =====")
-            except (AttributeError, aiosqlite.OperationalError) as e:
-                db_logger.error(e)
-                raise (e)
-
         # Schedule the coroutine in the existing event loop
-        loop.create_task(load_async_extension())
+        loop.create_task(_load_spatialite(dbapi_conn))
 
+
+async def setup_database(engine: AsyncEngine) -> None:
+    """Sets up tables for database."""
+
+    setup_spatialite(engine)
     async with engine.begin() as conn:
         # Enable extension loading
         await conn.execute(text("PRAGMA load_extension = 1"))

@@ -9,7 +9,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
 
 
 async def seed_data(session: AsyncSessionWrapper):
-    """
+    """Seeds database with initial data.
+
     dummy GeoLocation:
     lat=0
     lng=0
