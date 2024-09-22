@@ -28,6 +28,7 @@ type ProviderName = str
 type Specialties = List[str]
 type Qualification = List[str]
 type PracticeExpYears = int | float
+type MoneyType = int | float
 
 
 @dataclass
@@ -73,6 +74,7 @@ class Doctor:
     specialties: Specialties
     degree: Qualification
     experience: PracticeExpYears
+    fee: MoneyType
 
 
 @dataclass
@@ -84,5 +86,6 @@ class Provider:
     facility_type: FacilityType
     ownership: FacilityOwnerType
     specialties: Specialties
+    available_doctors: List[Doctor]
     stars: Annotated[int, Stars(min_rating=1, max_rating=5)]
     reviews: Annotated[int, Reviews(value=0)]

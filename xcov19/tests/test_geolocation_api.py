@@ -4,7 +4,7 @@ from xcov19.dto import LocationQueryJSON, GeoLocation, AnonymousId, QueryId
 from blacksheep import Content, Response
 
 
-@pytest.mark.integration
+@pytest.mark.api
 @pytest.mark.usefixtures("client")
 class TestGeolocationAPI:
     async def test_location_query_endpoint(self, client):

@@ -6,6 +6,7 @@ authors = ["codecakes <akulmat@protonmail.com>"]
 readme = "README.md"
 package-mode = true
 
+
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic = "^2.9.1"
@@ -20,6 +21,7 @@ alembic = "^1.13.2"
 aiosqlite = "^0.20.0"
 sqlmodel = {version="^0.0.22"}
 rich = {version = "^13.8.0"}
+spatialite = "^0.0.3"
 
 ruff = { version = "^0.6.3", optional = true }
 mypy = { version = "^1.11.2", optional = true }
@@ -66,8 +68,9 @@ include = [
 ]
 exclude = [
     "**/node_modules",
-    "**/__pycache__"]
-venv = "xcov19-7M_0Y8Vx-py3.12"
+    "**/__pycache__"
+    ]
+# venv = "xcov19-7M_0Y8Vx-py3.12"
 reportMissingImports = true
 
 [[tool.pyright.executionEnvironments]]

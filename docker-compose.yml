@@ -10,8 +10,10 @@ x-shared-config: &shared-config
             max-file: 2
 
 services:
-    xcov19-app:
+    app:
         <<: *shared-config
         build: 
           context: .
           dockerfile: Dockerfile
+          args:
+            CACHEBUST: ${CACHEBUST:-$(date +%s)}

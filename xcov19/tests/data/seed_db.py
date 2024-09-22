@@ -1,12 +1,5 @@
 """Dummy data to seed to database models.
 Mapped to SQLModel.
-
-dummy GeoLocation:
-lat=0
-lng=0
-
-cust_id=test_cust_id
-query_id=test_query_id
 """
 
 from sqlalchemy import ScalarResult
@@ -16,7 +9,15 @@ from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
 
 
 async def seed_data(session: AsyncSessionWrapper):
-    """
+    """Seeds database with initial data.
+
+    dummy GeoLocation:
+    lat=0
+    lng=0
+
+    cust_id=test_cust_id
+    query_id=test_query_id
+
     Now you can do:
     res = await self._session.exec(select(Query))
     query = res.first()
