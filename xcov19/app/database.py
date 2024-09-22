@@ -84,7 +84,6 @@ async def setup_database(engine: AsyncEngine) -> None:
     async with engine.begin() as conn:
         # Enable extension loading
         await conn.execute(text("PRAGMA load_extension = 1"))
-        # see: https://sqlmodel.tiangolo.com/tutorial/relationship-attributes/cascade-delete-relationships/#enable-foreign-key-support-in-sqlite
         await conn.execute(text("PRAGMA foreign_keys=ON"))
         await conn.run_sync(SQLModel.metadata.create_all)
         await conn.commit()
