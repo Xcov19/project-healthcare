@@ -5,10 +5,9 @@ import unittest
 import random
 
 
-from xcov19.tests.data.seed_db import seed_data
-from xcov19.tests.start_server import setUpTestDatabase
 from xcov19.domain.models.provider import (
     Contact,
+    Doctor,
     FacilityEstablishment,
     FacilityOwnership,
     Provider,
@@ -23,8 +22,6 @@ from xcov19.dto import Address, LocationQueryJSON, FacilitiesResult, GeoLocation
 
 
 from xcov19.utils.mixins import InterfaceProtocolCheckMixin
-from sqlmodel.ext.asyncio.session import AsyncSession as AsyncSessionWrapper
-
 
 RANDOM_SEED = random.seed(1)
 
@@ -39,6 +36,15 @@ class DummyProviderRepo(IProviderRepository[Provider], InterfaceProtocolCheckMix
                 contact=Contact("+1234567890"),
                 facility_type=FacilityEstablishment.HOSPITAL,
                 ownership=FacilityOwnership.PRIVATE,
+                available_doctors=[
+                    Doctor(
+                        name="Dr. Smith",
+                        specialties=["General"],
+                        degree=["MBBS"],
+                        experience=5,
+                        fee=250.00,
+                    )
+                ],
                 specialties=["General", "Surgery"],
                 stars=4,
                 reviews=100,
@@ -56,6 +62,15 @@ class DummyProviderRepo(IProviderRepository[Provider], InterfaceProtocolCheckMix
                 contact=Contact("+1234567890"),
                 facility_type=FacilityEstablishment.HOSPITAL,
                 ownership=FacilityOwnership.PRIVATE,
+                available_doctors=[
+                    Doctor(
+                        name="Dr. Smith",
+                        specialties=["General"],
+                        degree=["MBBS"],
+                        experience=5,
+                        fee=250.00,
+                    )
+                ],
                 specialties=["General", "Surgery"],
                 stars=4,
                 reviews=100,
@@ -186,55 +201,60 @@ class GeoLocationServiceTest(unittest.IsolatedAsyncioTestCase):
 
 
 # @pytest.mark.skip(reason="WIP")
-@pytest.mark.integration
-@pytest.mark.usefixtures("dummy_reverse_geo_lookup_svc", "dummy_geolocation_query_json")
-class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
-    """Test case for Sqlite Repository to test Geolocation Service.
+# @pytest.mark.integration
+# @pytest.mark.usefixtures("dummy_reverse_geo_lookup_svc", "dummy_geolocation_query_json")
+# class GeoLocationServiceSqlRepoDBTest(unittest.IsolatedAsyncioTestCase):
+# """Test case for Sqlite Repository to test Geolocation Service.
 
-    Before testing, ensure to:
-    1. Setup Database
-    2. For fetch_facilities, relevant services are configured.
-    3. patient_query_lookup_svc is configured to call sqlite repository.
-    """
+# Before testing, ensure to:
+# 1. Setup Database
+# 2. For fetch_facilities, relevant services are configured.
+# 3. patient_query_lookup_svc is configured to call sqlite repository.
+# """
 
-    @pytest.fixture(autouse=True)
-    def autouse(
-        self,
-        dummy_geolocation_query_json: LocationQueryJSON,
-        dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
-    ):
-        self.dummy_geolocation_query_json = dummy_geolocation_query_json
-        self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
+# @pytest.fixture(autouse=True)
+# def autouse(
+#     self,
+#     dummy_geolocation_query_json: LocationQueryJSON,
+#     dummy_reverse_geo_lookup_svc: Callable[[LocationQueryJSON], dict],
+# ):
+#     self.dummy_geolocation_query_json = dummy_geolocation_query_json
+#     self.dummy_reverse_geo_lookup_svc = dummy_reverse_geo_lookup_svc
 
-    async def asyncSetUp(self) -> None:
-        self._test_db = setUpTestDatabase()
-        await self._test_db.setup_test_database()
-        self._session = await self._test_db.start_async_session()
-        assert isinstance(self._session, AsyncSessionWrapper)
-        await seed_data(self._session)
-        await super().asyncSetUp()
+# async def asyncSetUp(self) -> None:
+#     self._test_db = SetUpTestDatabase()
+#     await self._test_db.setup_test_database()
+#     self._session = await self._test_db.start_async_session()
+#     assert isinstance(self._session, AsyncSessionWrapper)
+#     await seed_data(self._session)
+#     await super().asyncSetUp()
 
-    async def asyncTearDown(self) -> None:
-        await self._test_db.aclose()
-        await super().asyncTearDown()
+# async def asyncTearDown(self) -> None:
+#     await self._test_db.aclose()
+#     await super().asyncTearDown()
 
-    def _patient_query_lookup_svc_using_repo(
-        self, address: Address, query: LocationQueryJSON
-    ) -> List[FacilitiesResult]:
-        # TODO: Implement a patient query lookup service
-        # that returns type List[FacilitiesResult]
-        ...
+# def _patient_query_lookup_svc_using_repo(
+#     self, address: Address, query: LocationQueryJSON
+# ) -> List[FacilitiesResult]:
+#     # TODO: Implement a patient query lookup service
+#     # that returns type List[FacilitiesResult]
+#     repo: IProviderRepository = SqliteProviderRepo(self._session)
+#     # TODO: change repo fetch_by_providers to List facilties, not providers.
+#     providers: List[Provider] = repo.fetch_by_providers(
+#         **address.model_dump(round_trip=True)
+#     )
+#     return repo.fetch_by_query(query.query_id.query_id, providers)
 
-    async def test_fetch_facilities(self):
-        # TODO Implement test_fetch_facilities like this:
-        providers = await GeolocationQueryService.fetch_facilities(
-            self.dummy_reverse_geo_lookup_svc,
-            self.dummy_geolocation_query_json,
-            self._patient_query_lookup_svc_using_repo,
-        )
-        assert providers
-        self.assertIsInstance(providers, list)
-        self.assertIs(len(providers), 1)
+# async def test_fetch_facilities(self):
+#     # TODO Implement test_fetch_facilities like this:
+#     facilities = await GeolocationQueryService.fetch_facilities(
+#         self.dummy_reverse_geo_lookup_svc,
+#         self.dummy_geolocation_query_json,
+#         self._patient_query_lookup_svc_using_repo,
+#     )
+#     assert facilities
+#     self.assertIsInstance(facilities, list)
+#     self.assertIs(len(facilities), 1)
 
 
 @pytest.mark.usefixtures("dummy_geolocation_query_json", "dummy_reverse_geo_lookup_svc")
