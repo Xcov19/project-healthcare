@@ -160,7 +160,7 @@ class Provider(SQLModel, table=True):
     geopoint: Annotated[
         tuple, lambda geom: PointType.pydantic_adapter().validate_python(geom)
     ] = Field(sa_column=Column(PointType, nullable=False), allow_mutation=False)
-    contact: str = Field(sa_column=Column(NUMERIC, nullable=False))
+    contact: int = Field(sa_column=Column(NUMERIC, nullable=False))
     facility_type: str = Field(sa_column=Column(TEXT, nullable=False))
     ownership_type: str = Field(sa_column=Column(TEXT, nullable=False))
     specialties: List[str] = Field(sa_column=Column(JSON, nullable=False))
