@@ -87,14 +87,6 @@ RUN chown -R nonroot:nonroot /app
 RUN mkdir -p /var/cache
 RUN chown -R nonroot:nonroot /var/cache
 
-# Copy the application code
-COPY --chown=nonroot:nonroot --chmod=555 xcov19 xcov19/
-COPY --chown=nonroot:nonroot --chmod=555 Makefile .
-COPY --chown=nonroot:nonroot --chmod=555 pyproject.toml .
-COPY --chown=nonroot:nonroot --chmod=555 poetry.lock .
-COPY --chown=nonroot:nonroot --chmod=555 *.sh .
-COPY --chown=nonroot:nonroot --chmod=555 LICENSE .
-
 ENV POETRY_NO_INTERACTION=1
 ENV POETRY_VIRTUALENVS_CREATE=false
 ENV POETRY_CACHE_DIR='/var/cache/pypoetry'
@@ -106,6 +98,11 @@ RUN curl --proto "=https" --tlsv1.2 -sSf -L https://install.python-poetry.org | 
 # Change ownership of Poetry's cache and configuration directories
 RUN mkdir -p /var/cache/pypoetry && chown -R nonroot:nonroot /var/cache/pypoetry
 RUN chown -R nonroot:nonroot /usr/local/ && chmod -R 755 /usr/local/
+
+# Copy the application code
+COPY --chown=nonroot:nonroot --chmod=555 pyproject.toml .
+COPY --chown=nonroot:nonroot --chmod=555 poetry.lock .
+COPY --chown=nonroot:nonroot --chmod=555 LICENSE .
 
 # Switch to nonroot user
 USER nonroot:nonroot

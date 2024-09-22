@@ -2,6 +2,16 @@
 # Reuse the stage from Dockerfile.build
 FROM xcov19-setup AS test-integration
 
+# Set the working directory
+WORKDIR /app
+
+# Bust cached build if --build CACHEBUST=<some data> is passed 
+# to ensure updated source code is built
+ARG CACHEBUST=1
+COPY --chown=nonroot:nonroot --chmod=555 xcov19 xcov19/
+COPY --chown=nonroot:nonroot --chmod=555 Makefile .
+COPY --chown=nonroot:nonroot --chmod=555 *.sh .
+
 # Switch to nonroot user
 USER nonroot:nonroot
 

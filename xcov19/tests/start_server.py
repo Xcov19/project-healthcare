@@ -35,7 +35,7 @@ async def start_server(app: Application) -> AsyncGenerator[Application, None]:
             await app.stop()
 
 
-class setUpTestDatabase:
+class SetUpTestDatabase:
     """Manages the lifecycle of the test database."""
 
     def __init__(self) -> None:
@@ -52,6 +52,7 @@ class setUpTestDatabase:
         await setup_database(engine)
 
     async def start_async_session(self) -> AsyncSession | AsyncSessionWrapper:
+        """Returns an asynchronous session."""
         if not isinstance(self._container, Container):
             raise InvalidDIContainerTypeError("Container not of valid type.")
         self._session = await self._stack.enter_async_context(
@@ -64,6 +65,7 @@ class setUpTestDatabase:
         return self._session
 
     async def aclose(self) -> None:
+        # TODO: replace print with logger
         print("async closing test server db session closing.")
         if not isinstance(self._session, AsyncSessionWrapper):
             raise InvalidSessionTypeError(

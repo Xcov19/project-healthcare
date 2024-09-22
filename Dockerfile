@@ -2,6 +2,16 @@
 # Reuse the stage from Dockerfile.build
 FROM xcov19-setup AS run
 
+# Set the working directory
+WORKDIR /app
+
+# Bust cached build if --build CACHEBUST=<some data> is passed 
+# to ensure updated source code is built
+ARG CACHEBUST
+COPY --chown=nonroot:nonroot --chmod=555 xcov19 xcov19/
+COPY --chown=nonroot:nonroot --chmod=555 Makefile .
+COPY --chown=nonroot:nonroot --chmod=555 *.sh .
+
 USER nonroot:nonroot
 
 # Set the start command
