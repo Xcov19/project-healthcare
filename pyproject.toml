@@ -17,7 +17,7 @@ uvloop = {version = "^0.20.0", markers = "sys_platform != 'win32'"}
 pydantic-settings = {version = "^2.3.4", markers = "sys_platform != 'win32'"}
 cython = "^3.0.11"
 sqlalchemy = {version="^2.0.34", markers = "sys_platform != 'win32'", extras = ["asyncio"]}
-alembic = "^1.13.2"
+alembic = "^1.13.3"
 aiosqlite = "^0.20.0"
 sqlmodel = {version="^0.0.22"}
 rich = {version = "^13.8.0"}
