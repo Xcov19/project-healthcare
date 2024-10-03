@@ -37,7 +37,12 @@ class TestGeolocationAPI:
         # Validate response body (assuming it should return a JSON object)
         try:
             response_data = await response.json()
-            assert "expected_key" in response_data, "Response JSON does not contain expected key"
+            assert "latitude" in response_data, "Response JSON does not contain latitude"
+            assert "longitude" in response_data, "Response JSON does not contain longitude"
+            assert isinstance(response_data["latitude"], float), "Latitude is not a float"
+            assert isinstance(response_data["longitude"], float), "Longitude is not a float"
+            assert -90 <= response_data["latitude"] <= 90, "Latitude is out of valid range"
+            assert -180 <= response_data["longitude"] <= 180, "Longitude is out of valid range"
             # Add more assertions based on expected structure of response_data
         except Exception as e:
             pytest.fail(f"Failed to parse JSON response: {e}")
