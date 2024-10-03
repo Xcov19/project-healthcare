@@ -18,10 +18,11 @@ class TestGeolocationAPI:
         # Send a POST request to the /geo endpoint
         query = location_query.model_dump(round_trip=True)
         binary_data = json.dumps(query).encode("utf-8")
-        
+        print("binary data", binary_data, type(binary_data))
         response: Response = await client.post(
             "/geo",
             content=Content(b"application/json", binary_data),
+            # Add the required Header
             headers={
                 "X-Origin-Match-Header": "secret",
             },
