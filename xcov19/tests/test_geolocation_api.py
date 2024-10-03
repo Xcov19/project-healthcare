@@ -18,20 +18,25 @@ class TestGeolocationAPI:
         # Send a POST request to the /geo endpoint
         query = location_query.model_dump(round_trip=True)
         binary_data = json.dumps(query).encode("utf-8")
-        print("binary data", binary_data, type(binary_data))
+        
         response: Response = await client.post(
             "/geo",
             content=Content(b"application/json", binary_data),
-            # Add the required header
             headers={
                 "X-Origin-Match-Header": "secret",
             },
         )
 
-        # The current implementation returns ok(), which is null in JSON
-        # response_text = await response.text()
-        # assert response_text.lower() == "resource not found"
-        # Assert the response
-        assert response.content_type() == b"text/plain; charset=utf-8"
-        # assert response.content == b''
-        assert response.status == 200
+        # Check if the response status is OK (200)
+        assert response.status == 200, f"Expected status 200 but got {response.status}"
+
+        # Check if content type is as expected
+        assert response.content_type() == b"text/plain; charset=utf-8", f"Unexpected content type: {response.content_type()}"
+
+        # Validate response body (assuming it should return a JSON object)
+        try:
+            response_data = await response.json()
+            assert "expected_key" in response_data, "Response JSON does not contain expected key"
+            # Add more assertions based on expected structure of response_data
+        except Exception as e:
+            pytest.fail(f"Failed to parse JSON response: {e}")
