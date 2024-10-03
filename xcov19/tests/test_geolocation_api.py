@@ -43,6 +43,13 @@ class TestGeolocationAPI:
             assert isinstance(response_data["longitude"], float), "Longitude is not a float"
             assert -90 <= response_data["latitude"] <= 90, "Latitude is out of valid range"
             assert -180 <= response_data["longitude"] <= 180, "Longitude is out of valid range"
-            # Add more assertions based on expected structure of response_data
+assert 'latitude' in response_data, "Response missing 'latitude'"
+assert 'longitude' in response_data, "Response missing 'longitude'"
+assert 'city' in response_data, "Response missing 'city'"
+assert 'country' in response_data, "Response missing 'country'"
+assert isinstance(response_data['latitude'], float), "Latitude should be a float"
+assert isinstance(response_data['longitude'], float), "Longitude should be a float"
+assert isinstance(response_data['city'], str), "City should be a string"
+assert isinstance(response_data['country'], str), "Country should be a string"
         except Exception as e:
             pytest.fail(f"Failed to parse JSON response: {e}")
