@@ -23,7 +23,7 @@ sqlmodel = {version="^0.0.22"}
 rich = {version = "^13.8.0"}
 spatialite = "^0.0.3"
 
-ruff = { version = "^0.6.3", optional = true }
+ruff = { version = "^0.6.9", optional = true }
 mypy = { version = "^1.11.2", optional = true }
 blacksheep-cli = { version = "^0.0.4", optional = true }
 pyright = { version = "^1.1.379", optional = true }
